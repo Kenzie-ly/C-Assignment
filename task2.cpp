@@ -16,7 +16,7 @@ struct AssignmentRecord {
 };
 
 class RobotManager{
-    Robot* robots; //no need to put size at start
+    Robot* robots;//heap array
 
     AssignmentRecord* task_record_head;
     AssignmentRecord* task_record_tail;
@@ -25,6 +25,7 @@ class RobotManager{
     int last_robot_busy_index; //rear
 
     int total_robots;
+    bool is_empty = true;
 
     public:
         RobotManager(int capacity){
@@ -36,7 +37,7 @@ class RobotManager{
             task_record_tail = NULL;
             total_robots = capacity;
 
-            this->robots = new Robot[total_robots];
+            robots = new Robot[total_robots];
             for (int i=0; i<total_robots; i++){
                 
                 robot.r_id = "R" + std::to_string(i+1);
@@ -44,7 +45,7 @@ class RobotManager{
                 robot.numOfTask = 0;
                 robot.current_task = "";
 
-                this->robots[i] = robot;
+                robots[i] = robot;
             }
         }
 
@@ -62,20 +63,22 @@ class RobotManager{
 
         bool assignTask(std::string task){
             //enqueue at rear
-            bool same_position = ((last_robot_busy_index+1) % total_robots) == (current_index+1 % total_robots);
+            int new_index = (last_robot_busy_index+1) % total_robots;
 
-            if(same_position && task_record_head != NULL){
+            if(current_index == -1 || is_empty) {
+                //empty case
+                current_index = (current_index+1) % total_robots;
+                is_empty = false;
+            }else if (new_index == current_index && !is_empty){
+                //means full, not empty
                 return false;
-            }
-            last_robot_busy_index += 1;
-            last_robot_busy_index = last_robot_busy_index % total_robots;
-            
-            if (robots[last_robot_busy_index].r_status == -1){
-                int index = last_robot_busy_index;
+            }else if (robots[new_index].r_status == -1){
+                int index = new_index;
                 bool isFound = false;
 
                 while (index != current_index){
                     if(robots[index].r_status == 1){
+                        isFound = true;
                         break;
                     }
                     index = (index+1) % total_robots;
@@ -84,6 +87,8 @@ class RobotManager{
                 if(!isFound) return false;
                 last_robot_busy_index = index;
             }
+
+            last_robot_busy_index = new_index;
 
             AssignmentRecord* newRecord = new AssignmentRecord();
             newRecord->r_id = robots[last_robot_busy_index].r_id;
@@ -107,28 +112,29 @@ class RobotManager{
         }
 
         void completeTask(){
-            bool same_position = ((last_robot_busy_index+1) % total_robots) == (current_index+1 % total_robots);
+            if(is_empty){
+                std::cout << "There are no tasks to be completed!" << std::endl;
+                return;
+            };
 
             //dequeue at front
-            if (same_position || task_record_head == NULL){
-                std::cout << "There are no tasks to be completed!";
-                return;
-            }
-
-            current_index += 1;
-            current_index = current_index % total_robots;
-
             robots[current_index].current_task = "";
             robots[current_index].r_status = 1;
 
             //update assignment record
             AssignmentRecord* cur = task_record_head;
             while (cur != NULL){
-                if(cur->r_id == robots[current_index].r_id){
+                if(cur->r_id == robots[current_index].r_id && cur->t_status == 0){
                     cur->t_status = 1;
-                    break;;
+                    break;
                 }
                 cur = cur->nextRecord;
+            }
+
+            if (current_index != last_robot_busy_index){ 
+                current_index = ((current_index+1) % total_robots);
+            }else{
+                is_empty = true;
             }
 
             std::cout<< "Sucesfully completed task, " << cur->t_id << std::endl;
@@ -191,7 +197,7 @@ class RobotManager{
             
             cout << "Task ID\t\tRobot ID\t\tTask Status\n";
             while (cur != nullptr){
-                cout << cur->t_id << "\t\t" << cur->r_id << checkStatus(cur->t_status, 't') << endl;
+                cout << cur->t_id << "\t\t" << cur->r_id << "\t\t" << checkStatus(cur->t_status, 't') << endl;
                 cur = cur->nextRecord;
             }
         }
@@ -238,7 +244,8 @@ void robotMenu(RobotManager& robotManager){
             cin >> task_id;
 
             if (robotManager.assignTask(task_id)) cout << "Successfully assigining task!" << endl; else cout << "Sorry, no robots are available now!";
-        }else if(choice == 2) robotManager.completeTask();
+        }
+        else if(choice == 2) robotManager.completeTask();
         else if (choice == 4) robotManager.displayAssignmentList();
         else if (choice == 5) robotManager.displayActiveTask();
         else if (choice == 6) robotManager.displayRobotStatus(); 
