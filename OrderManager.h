@@ -25,7 +25,7 @@ class OrderManager {
     public:
     OrderManager();
     void addOrder(std::string customerName, std::string itemName);
-    Order* getOrder();
+    std::string getOrder();
     bool isEmpty();
     bool historyIsEmpty();
     int getQueueCount();
