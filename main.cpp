@@ -115,7 +115,7 @@ int main(){
     OrderManager orderManager;
     cout << "Enter the number of robots in warehouse: ";
     cin >> capacity;
-    RobotManager* robotManager = new RobotManager(capacity);
+    RobotManager robotManager(capacity);
     int mainMenuChoice;
     bool exitSystem = false;
     while (true) {
@@ -136,7 +136,7 @@ int main(){
                 break;
             }
             case 2: {
-                robotManager->robotMenu();
+                robotMenu(robotManager);
                 break;
             }
             case 3: {
