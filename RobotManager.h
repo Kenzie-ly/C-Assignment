@@ -28,21 +28,23 @@ class RobotManager {
     int total_robots;
     bool is_empty = true;
 
-public:
-    RobotManager(int capacity);
+    public:
+        RobotManager(int capacity);
 
-    ~RobotManager();
+        ~RobotManager();
 
-    bool assignTask(std::string task);
+        bool assignTask(std::string task);
 
-    void completeTask();
+        void completeTask();
 
-    void displayActiveTask();
+        void displayActiveTask();
 
-    void displayRobotStatus();
+        void displayRobotStatus();
 
-    void displayAssignmentList();
+        void displayAssignmentList();
 
-private:
-    std::string checkStatus(int status, char code);
+        void setMaintenanceStatus(std::string r_id, bool status);
+
+    private:
+        std::string checkStatus(int status, char code);
 };

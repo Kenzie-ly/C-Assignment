@@ -2,8 +2,6 @@
 #include <iostream>
 #include <iomanip>
 
-using namespace std;
-
 RobotManager::RobotManager(int capacity) {
     Robot robot;
 
@@ -41,27 +39,28 @@ bool RobotManager::assignTask(std::string task) {
     //enqueue at rear
     int new_index = (last_robot_busy_index+1) % total_robots;
 
+    //maintenance
+    if (robots[new_index].r_status == -1){
+        bool isFound = false;
+
+        for (int i = 0; i < total_robots; i++) {
+            //start from last_robot
+            if (robots[new_index].r_status == 1) {
+                isFound = true;
+                break;
+            }
+            new_index = (new_index + 1) % total_robots;
+        }
+        if(!isFound) return false;
+    }
+
     if(current_index == -1 || is_empty) {
         //empty case
-        current_index = (current_index+1) % total_robots;
+        current_index = new_index;
         is_empty = false;
     }else if (new_index == current_index && !is_empty){
         //means full, not empty
         return false;
-    }else if (robots[new_index].r_status == -1){
-        int index = new_index;
-        bool isFound = false;
-
-        while (index != current_index){
-            if(robots[index].r_status == 1){
-                isFound = true;
-                break;
-            }
-            index = (index+1) % total_robots;
-        }
-        
-        if(!isFound) return false;
-        last_robot_busy_index = index;
     }
 
     last_robot_busy_index = new_index;
@@ -84,14 +83,26 @@ bool RobotManager::assignTask(std::string task) {
     robots[last_robot_busy_index].current_task = task;
     robots[last_robot_busy_index].numOfTask += 1;
 
+    std::cout << "\nDEBUG ASSIGN\n";
+    std::cout << "Assigned to: " << robots[last_robot_busy_index].r_id << '\n';
+    std::cout << "current_index = " << current_index << '\n';
+    std::cout << "last_robot_busy_index = " << last_robot_busy_index << '\n';
     return true;
 }
 
 void RobotManager::completeTask() {
-    if(is_empty){
+    if(is_empty || current_index == -1){
         std::cout << "There are no tasks to be completed!" << std::endl;
         return;
     };
+
+    std::cout << "\nDEBUG COMPLETE\n";
+    std::cout << "current_index = " << current_index << '\n';
+    std::cout << "last_robot_busy_index = " << last_robot_busy_index << '\n';
+    std::cout << "robot = " << robots[current_index].r_id << '\n';
+    std::cout << "task = " << robots[current_index].current_task << '\n';
+
+    
 
     //dequeue at front
     robots[current_index].current_task = "";
@@ -102,6 +113,7 @@ void RobotManager::completeTask() {
     while (cur != NULL){
         if(cur->r_id == robots[current_index].r_id && cur->t_status == 0){
             cur->t_status = 1;
+            std::cout<< "Sucesfully completed task, " << cur->t_id << std::endl;
             break;
         }
         cur = cur->nextRecord;
@@ -112,8 +124,6 @@ void RobotManager::completeTask() {
     }else{
         is_empty = true;
     }
-
-    std::cout<< "Sucesfully completed task, " << cur->t_id << std::endl;
 }
 
 void RobotManager::displayActiveTask() {
@@ -154,7 +164,7 @@ void RobotManager::displayRobotStatus() {
     cout << left << setw(15) << "Robot ID" 
             << setw(18) << "Current Task" 
             << setw(15) << "Status" 
-            << setw(30) << "Number of Tasks Completed" << endl;
+            << setw(25) << "Number of Assigned Tasks" << endl;
     
     for (int i=0; i <total_robots; i++ ){
 
@@ -191,7 +201,7 @@ std::string RobotManager::checkStatus(int status, char code) {
     string s = "";
 
     if(toupper(code) == 'R'){
-        if (status == -1) s = "Maintainance";
+        if (status == -1) s = "Maintenance";
         else if (status == 0) s = "Busy";
         else if (status == 1) s = "Available";
         return s;
@@ -200,4 +210,27 @@ std::string RobotManager::checkStatus(int status, char code) {
         else if (status == 1) s = "Completed";
         return s;
     }
+}
+
+void RobotManager::setMaintenanceStatus(std::string r_id, bool status){
+    for(int i=0; i<total_robots; i++){
+        if(robots[i].r_id == r_id){
+            if(robots[i].r_status == 0 && status){
+                std::cout<< "Cannot set status on running robots!"<<std::endl;
+                return;
+            }
+
+            if(status){
+                robots[i].r_status = -1;
+                std::cout << "Successfully changed status into maintenance!" << std::endl;
+            }else{
+                robots[i].r_status = 1;
+                std::cout << "Successfully set into available!" << std::endl;
+            }
+            
+            return;
+        }
+    }
+
+    std::cout << "Robot ID cannot be found!" << std::endl;
 }
