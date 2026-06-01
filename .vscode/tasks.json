@@ -9,6 +9,7 @@
                 "-g",
                 "${file}",
                 "RobotManager.cpp",
+                "OrderManager.cpp",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],
