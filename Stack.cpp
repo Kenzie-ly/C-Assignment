@@ -58,8 +58,16 @@ bool Stack::isEmpty()
 
 void Stack::display()
 {
+	for (int i = 0; i <= top; i++)
+	{
+		std::cout << array[i] << ", ";
+	}
+}
+
+void Stack::displayReverse()
+{
 	for (int i = top; i >= 0; i--)
 	{
-		std::cout << array[i] << '\n';
+		std::cout << array[i] << ", ";
 	}
 }

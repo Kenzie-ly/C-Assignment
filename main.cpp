@@ -114,8 +114,7 @@ int main(){
     Robot robot;
     robot.currentCol = 0;
     robot.currentRow = 14;
-    navigation->moveRobot(&robot, 1, 1, 2);
-
+    navigation->moveRobot(&robot, 4, 2, 2);
     int capacity;
     OrderManager orderManager;
     cout << "Enter the number of robots in warehouse: ";

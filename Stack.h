@@ -13,6 +13,7 @@ public:
 	std::string peek();
 	bool isEmpty();
 	void display();
+	void displayReverse();
 
 private:
 	std::string* array = nullptr;

@@ -6,7 +6,7 @@
 Navigation::Navigation(Layout& layout) : layout(layout)
 {
 	stack = new Stack(200);
-	
+    movementLogs = new std::string[500];
 }
 
 void Navigation::moveRobot(Robot* robot, int zone, int aisle, int shelf)
@@ -23,8 +23,7 @@ void Navigation::moveRobot(Robot* robot, int zone, int aisle, int shelf)
                 if (!tryMove(robot, "up"))
                     if (!tryMove(robot, "down"))
                     {
-                        std::string lastMove = stack->pop();
-                        reverseMove(robot, lastMove);
+                        reverseMove(robot);
                     }    
         }
         else if (robot->currentCol > targetCol)
@@ -33,8 +32,7 @@ void Navigation::moveRobot(Robot* robot, int zone, int aisle, int shelf)
                 if (!tryMove(robot, "up"))
                     if (!tryMove(robot, "down"))
                     {
-                        std::string lastMove = stack->pop();
-                        reverseMove(robot, lastMove);
+                        reverseMove(robot);
                     }
         }
         else
@@ -45,8 +43,7 @@ void Navigation::moveRobot(Robot* robot, int zone, int aisle, int shelf)
                     if (!tryMove(robot, "right"))
                         if (!tryMove(robot, "left"))
                         {
-                            std::string lastMove = stack->pop();
-                            reverseMove(robot, lastMove);
+                            reverseMove(robot);
                         }
             }
             else  // go down
@@ -55,14 +52,26 @@ void Navigation::moveRobot(Robot* robot, int zone, int aisle, int shelf)
                     if (!tryMove(robot, "right"))
                         if (!tryMove(robot, "left"))
                         {
-                            std::string lastMove = stack->pop();
-                            reverseMove(robot, lastMove);
+                            reverseMove(robot);
                         }
             }
         }
+        Sleep(150);
+        system("cls");
         layout.display();
-        Sleep(1000);
+        display();
 	}
+
+    Sleep(3000);
+    while (!stack->isEmpty())
+    {
+        reverseMove(robot);
+        Sleep(150);
+        system("cls");
+        layout.display();
+        display();
+        std::cout << '\n' << std::endl;
+    }
 }
 
 void Navigation::getTarget(int zone, int aisle, int shelf, int& targetRow, int& targetCol)
@@ -92,16 +101,49 @@ bool Navigation::tryMove(Robot* robot, std::string direction)
         robot->currentRow = nextRow;
         robot->currentCol = nextCol;
         stack->push(direction);
+        top++;
+        movementLogs[top] = direction;
         layout.occupyLocation(nextRow, nextCol);
         return true;
     }
     return false;
 }
 
-void Navigation::reverseMove(Robot* robot, std::string direction)
+void Navigation::reverseMove(Robot* robot)
 {
-    if (direction == "right") robot->currentCol--;
-    if (direction == "left")  robot->currentCol++;
-    if (direction == "up")    robot->currentRow++;
-    if (direction == "down")  robot->currentRow--;
+    layout.deoccupyLocation(robot->currentRow, robot->currentCol);
+    std::string direction = stack->pop();
+    std::string reversed;
+    if (direction == "right")
+    {
+        robot->currentCol--;
+        reversed = "left";
+    }
+    else if (direction == "left")  
+    {
+        robot->currentCol++;
+        reversed = "right";
+    }
+    else if (direction == "up")
+    {
+        robot->currentRow++;
+        reversed = "down";
+    }
+    else if (direction == "down")
+    {
+        robot->currentRow--;
+        reversed = "up";
+    }
+
+    top++;
+    movementLogs[top] = reversed;
+    layout.occupyLocation(robot->currentRow, robot->currentCol);
+}
+
+void Navigation::display()
+{
+    for (int i = 0; i <= top; i++)
+    {
+        std::cout << movementLogs[i] << ", ";
+    }
 }

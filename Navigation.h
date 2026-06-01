@@ -9,13 +9,18 @@ class Navigation
 {
 public:
 	Navigation(Layout& layout);
+	~Navigation() {}	
 
 	void moveRobot(Robot* robot, int zone, int aisle, int shelf);
 	void getTarget(int zone, int aisle, int shelf, int& targetRow, int& targetCol);
 
 private:
-	Layout& layout;
-	Stack* stack = nullptr;
 	bool tryMove(Robot* robot, std::string direction);
-	void reverseMove(Robot* robot, std::string direction);
+	void reverseMove(Robot* robot);
+	void display();
+
+	Layout& layout;
+	Stack* stack;
+	std::string* movementLogs;
+	int top = -1;
 };
