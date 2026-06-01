@@ -4,7 +4,7 @@ class Layout
 {
 public:
 	Layout();
-	~Layout();
+    ~Layout() {}
 
     enum Cell {
         WALKABLE = 0,
@@ -14,13 +14,21 @@ public:
         ZONE_C = 4,
         ZONE_D = 5,
         SHELF = 6,
-        AISLE = 7
+        AISLE = 7,
+        OCCUPIED = 8
     };
 
     void display();
+    void update();
+    bool occupyLocation(int r, int c);
+    bool deoccupyLocation(int r, int c);
+    int* getZoneCol(int zone);
+    int* getZoneRow(int zone);
+    bool isObstacle(int r, int c);
 
 private:
 	int grid[15][45];
+    int baseGrid[15][45];
     int zoneAShelfCols[6] = { 4, 7, 8, 11, 12, 15 };
     int zoneAShelfRows[3] = { 4, 5, 6 };
 
