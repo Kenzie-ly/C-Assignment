@@ -1,9 +1,9 @@
 #include <iostream>
 #include <string>
 #include "RobotManager.h"
-#include "Stack.h"
-#include "OrderManager.h"
 #include "Layout.h"
+#include "OrderManager.h"
+#include "Navigation.h"
 
 void processAllOrders(RobotManager& robotManager, OrderManager& orderManager){
     using namespace std;
@@ -132,9 +132,13 @@ void orderMenu(OrderManager& orderManager) {
 }
 
 int main(){
-    Layout* layout = new Layout();
-    layout->display();
 
+    Layout layout;
+    Navigation* navigation = new Navigation(layout);
+    Robot robot;
+    robot.currentCol = 0;
+    robot.currentRow = 14;
+    navigation->moveRobot(&robot, 4, 2, 2);
     int capacity;
     OrderManager orderManager;
     std::cout << "Enter the number of robots in warehouse: ";

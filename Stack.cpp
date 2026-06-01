@@ -1,6 +1,13 @@
 #include "Stack.h"
 #include <iostream>
 
+Stack::Stack(int size)
+{
+	top = -1;
+	max = 0;
+	createArray(size);
+}
+
 void Stack::createArray(int size)
 {
 	max = size - 1;
@@ -51,8 +58,16 @@ bool Stack::isEmpty()
 
 void Stack::display()
 {
+	for (int i = 0; i <= top; i++)
+	{
+		std::cout << array[i] << ", ";
+	}
+}
+
+void Stack::displayReverse()
+{
 	for (int i = top; i >= 0; i--)
 	{
-		std::cout << array[i] << '\n';
+		std::cout << array[i] << ", ";
 	}
 }

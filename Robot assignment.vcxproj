@@ -126,12 +126,14 @@
     <ClCompile Include="Layout.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Navigation.cpp" />
+    <ClCompile Include="OrderManager.cpp" />
     <ClCompile Include="RobotManager.cpp" />
     <ClCompile Include="Stack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Layout.h" />
     <ClInclude Include="Navigation.h" />
+    <ClInclude Include="OrderManager.h" />
     <ClInclude Include="RobotManager.h" />
     <ClInclude Include="Stack.h" />
   </ItemGroup>
