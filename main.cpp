@@ -28,6 +28,7 @@ void orderMenu(OrderManager& orderManager) {
             case 1: {
                 std::cout << "Customer Name: ";
                 std::cin >> customerName;
+                // For loop display item
                 std::cout << "Item Name: ";
                 std::cin >> itemName;
                 orderManager.addOrder(customerName, itemName);
