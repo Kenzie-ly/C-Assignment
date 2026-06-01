@@ -182,4 +182,3 @@ std::string RobotManager::checkStatus(int status, char code) {
         return s;
     }
 }
-};
