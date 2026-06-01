@@ -3,38 +3,9 @@
 #include "RobotManager.h"
 #include "Stack.h"
 #include "OrderManager.h"
+#include "Layout.h"
 
-void robotMenu(RobotManager& robotManager){
-    using namespace std;
-
-    while (true){
-        cout << endl;
-        cout << "1. Allocate tasks to robots" << endl;
-        cout << "2. Complete a task" << endl;
-        cout << "3. set maintaincance status" << endl;
-        cout << "4. Display robot assignment list" << endl; //task id, robit id
-        cout << "5. Display current active tasks" << endl; //task id, robit id, in progress status
-        cout << "6. Display robot status" << endl; //robot id, cur task, status, num of completed task
-
-        cout << "7. Exit" << endl;
-        cout << "Input: ";
-        int choice;
-        cin >> choice;
-        
-        if (choice == 1){
-            string task_id;
-
-            cout << "Enter task id: ";
-            cin >> task_id;
-
-            if (robotManager.assignTask(task_id)) cout << "Successfully assigining task!" << endl; else cout << "Sorry, no robots are available now!";
-        }else if(choice == 2) robotManager.completeTask();
-        else if (choice == 4) robotManager.displayAssignmentList();
-        else if (choice == 5) robotManager.displayActiveTask();
-        else if (choice == 6) robotManager.displayRobotStatus(); 
-        else if (choice == 7) break;
-    }
-}
+using namespace std;
 
 void orderMenu(OrderManager& orderManager) {
     int orderChoice;
@@ -89,13 +60,14 @@ void orderMenu(OrderManager& orderManager) {
 }
 
 int main(){
-    using namespace std;
+    Layout* layout = new Layout();
+    layout->display();
 
     int capacity;
     OrderManager orderManager;
     cout << "Enter the number of robots in warehouse: ";
     cin >> capacity;
-    RobotManager robotManager(capacity);
+    RobotManager* robotManager = new RobotManager(capacity);
     int mainMenuChoice;
     bool exitSystem = false;
     while (true) {
@@ -116,7 +88,7 @@ int main(){
                 break;
             }
             case 2: {
-                robotMenu(robotManager);
+                robotManager->robotMenu();
                 break;
             }
             case 3: {
@@ -124,4 +96,5 @@ int main(){
             }
         }
     }
+    
 }
