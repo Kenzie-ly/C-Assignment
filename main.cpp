@@ -4,6 +4,7 @@
 #include "Layout.h"
 #include "OrderManager.h"
 #include "Navigation.h"
+#include "bstree.h"
 
 using namespace std;
 
@@ -107,6 +108,79 @@ void orderMenu(OrderManager& orderManager) {
     }
 }
 
+// Task 4 - Item Search and Management Menu
+// ============================================================
+void itemMenu(BST& itemDB) {
+    int choice;
+    do {
+        std::cout << "=============================================" << std::endl;
+        std::cout << "=========ITEM SEARCH & MANAGEMENT============" << std::endl;
+        std::cout << "=============================================" << std::endl;
+        std::cout << "1. Display All Items (Sorted by ID)" << std::endl;
+        std::cout << "2. Search Item by ID" << std::endl;
+        std::cout << "3. Search Item by Name" << std::endl;
+        std::cout << "4. Insert New Item" << std::endl;
+        std::cout << "5. Update Item" << std::endl;
+        std::cout << "6. Delete Item" << std::endl;
+        std::cout << "7. Back" << std::endl;
+        std::cout << "Choice: ";
+        std::cin >> choice;
+        std::cout << " " << std::endl;
+
+        switch (choice) {
+        case 1: {
+            itemDB.displaySorted();
+            break;
+        }
+        case 2: {
+            std::string id;
+            std::cout << "Enter Item ID: ";
+            std::cin >> id;
+            itemDB.searchByID(id);
+            break;
+        }
+        case 3: {
+            std::string name;
+            std::cin.ignore();
+            std::cout << "Enter Item Name: ";
+            std::getline(std::cin, name);
+            itemDB.searchByName(name);
+            break;
+        }
+        case 4: {
+            Item newItem;
+            std::cin.ignore();
+            std::cout << "Enter Item ID   : "; std::getline(std::cin, newItem.id);
+            std::cout << "Enter Item Name : "; std::getline(std::cin, newItem.name);
+            std::cout << "Enter Zone      : "; std::getline(std::cin, newItem.zone);
+            std::cout << "Enter Aisle     : "; std::getline(std::cin, newItem.aisle);
+            std::cout << "Enter Shelf     : "; std::getline(std::cin, newItem.shelf);
+            itemDB.insert(newItem);
+            break;
+        }
+        case 5: {
+            std::string id;
+            std::cout << "Enter Item ID to update: ";
+            std::cin >> id;
+            itemDB.update(id);
+            break;
+        }
+        case 6: {
+            std::string id;
+            std::cout << "Enter Item ID to delete: ";
+            std::cin >> id;
+            itemDB.remove(id);
+            break;
+        }
+        case 7: { break; }
+        default: {
+            std::cout << "[ERROR] Invalid choice. Please try again." << std::endl;
+        }
+        }
+
+    } while (choice != 7);
+}
+
 int main(){
 
     Layout layout;
@@ -117,6 +191,7 @@ int main(){
     navigation->moveRobot(&robot, 4, 2, 2);
     int capacity;
     OrderManager orderManager;
+    BST itemDB;
     cout << "Enter the number of robots in warehouse: ";
     cin >> capacity;
     RobotManager robotManager(capacity);
@@ -129,7 +204,8 @@ int main(){
         std::cout << "=============================================" << std::endl;
         std::cout << "1. Manage Orders" << std::endl;
         std::cout << "2. Manage Robots" << std::endl;
-        std::cout << "3. Exit" << std::endl;
+        std::cout << "3. Manage Items" << std::endl;
+        std::cout << "4. Exit" << std::endl;
         std::cout << "Choice: ";
         std::cin >> mainMenuChoice;
         std::cout << " " << std::endl;
@@ -144,9 +220,15 @@ int main(){
                 break;
             }
             case 3: {
+                itemMenu(itemDB);
+                break;
+            }
+            case 4: {
                 exitSystem = true;
             }
         }
     }
+    delete navigation;
+    return 0;
     
 }
