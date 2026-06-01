@@ -17,7 +17,7 @@ struct Robot {
 };
 
 class RobotManager {
-    Robot* robots; //no need to put size at start
+    Robot* robots;//heap array
 
     AssignmentRecord* task_record_head;
     AssignmentRecord* task_record_tail;
@@ -26,6 +26,7 @@ class RobotManager {
     int last_robot_busy_index; //rear
 
     int total_robots;
+    bool is_empty = true;
 
 public:
     RobotManager(int capacity);
