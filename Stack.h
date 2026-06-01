@@ -4,7 +4,12 @@
 class Stack
 {
 public:
-	Stack(int size);
+	Stack()
+	{
+		top = -1;
+		max = 0;
+	}
+
 	~Stack() { delete[] array; }
 
 	void createArray(int size);

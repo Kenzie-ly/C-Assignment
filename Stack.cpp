@@ -1,13 +1,6 @@
 #include "Stack.h"
 #include <iostream>
 
-Stack::Stack(int size)
-{
-	top = -1;
-	max = 0;
-	createArray(size);
-}
-
 void Stack::createArray(int size)
 {
 	max = size - 1;
