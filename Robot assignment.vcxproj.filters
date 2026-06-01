@@ -22,6 +22,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="bstree.cpp">
+    <ClCompile Include="RobotManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Navigation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Layout.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -30,6 +37,13 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="bstree.h">
+    <ClInclude Include="RobotManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Navigation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Layout.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
