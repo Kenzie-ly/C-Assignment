@@ -59,15 +59,16 @@ void Layout::display()
         for (int c = 0; c < 45; c++)
         {
             switch (grid[r][c]) {
-            case WALKABLE: std::cout << "  "; break;
-            case OBSTACLE: std::cout << "\033[40m  \033[0m"; break;  // black
-            case ZONE_A:   std::cout << "\033[41m  \033[0m"; break;  // red
-            case ZONE_B:   std::cout << "\033[42m  \033[0m"; break;  // green
-            case ZONE_C:   std::cout << "\033[44m  \033[0m"; break;  // blue
-            case ZONE_D:   std::cout << "\033[43m  \033[0m"; break;  // yellow
-            case SHELF:    std::cout << "\033[47m  \033[0m"; break;  // white
-            case AISLE:    std::cout << "\033[46m  \033[0m"; break;  // cyan
+            case WALKABLE: std::cout << "\033[100m  \033[0m"; break;  // gray
+            case OBSTACLE: std::cout << "\033[46m  \033[0m"; break; // dark red
+            case ZONE_A:   std::cout << "\033[41m  \033[0m"; break;   // red
+            case ZONE_B:   std::cout << "\033[42m  \033[0m"; break;   // green
+            case ZONE_C:   std::cout << "\033[44m  \033[0m"; break;   // blue
+            case ZONE_D:   std::cout << "\033[43m  \033[0m"; break;   // yellow
+            case SHELF:    std::cout << "\033[40m  \033[0m"; break;   // black
+            case AISLE:    std::cout << "\033[47m  \033[0m"; break;   // white
             }
         }
+        std::cout << '\n';
     }
 }

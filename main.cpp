@@ -4,8 +4,11 @@
 #include "Stack.h"
 #include "Layout.h"
 
+using namespace std;
+
 int main(){
-    using namespace std;
+    Layout* layout = new Layout();
+    layout->display();
 
     cout << "Enter the number of robots in warehouse: ";
     int capacity;

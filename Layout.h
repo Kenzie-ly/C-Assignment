@@ -30,7 +30,7 @@ private:
     int zoneCShelfCols[6] = { 12, 15, 16, 19, 20, 23 };
     int zoneCShelfRows[3] = { 10, 11, 12 };
 
-    int zoneDShelfCols[6] = { 30, 33, 34, 37, 38, 40 };
+    int zoneDShelfCols[6] = { 30, 33, 34, 37, 38, 41 };
     int zoneDShelfRows[3] = { 10, 11, 12 };
 
     int zoneAAisleCols[6] = { 5, 6, 9, 10, 13, 14 };
