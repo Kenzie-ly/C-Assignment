@@ -43,6 +43,8 @@ public:
 
     void displayAssignmentList();
 
+    void robotMenu();
+
 private:
     std::string checkStatus(int status, char code);
 };

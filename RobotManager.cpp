@@ -201,3 +201,34 @@ std::string RobotManager::checkStatus(int status, char code) {
         return s;
     }
 }
+
+void RobotManager::robotMenu() {
+    while (true) {
+        cout << endl;
+        cout << "1. Allocate tasks to robots" << endl;
+        cout << "2. Complete a task" << endl;
+        cout << "3. set maintaincance status" << endl;
+        cout << "4. Display robot assignment list" << endl; //task id, robit id
+        cout << "5. Display current active tasks" << endl; //task id, robit id, in progress status
+        cout << "6. Display robot status" << endl; //robot id, cur task, status, num of completed task
+
+        cout << "7. Exit" << endl;
+        cout << "Input: ";
+        int choice;
+        cin >> choice;
+
+        if (choice == 1) {
+            string task_id;
+
+            cout << "Enter task id: ";
+            cin >> task_id;
+
+            if (this->assignTask(task_id)) cout << "Successfully assigining task!" << endl; else cout << "Sorry, no robots are available now!" << endl;
+        }
+        else if (choice == 2) this->completeTask();
+        else if (choice == 4) this->displayAssignmentList();
+        else if (choice == 5) this->displayActiveTask();
+        else if (choice == 6) this->displayRobotStatus();
+        else if (choice == 7) break;
+    }
+}
