@@ -41,6 +41,10 @@ Order* OrderManager::getOrder() {
     return order;
 }
 
+Order* OrderManager::peakOrder() {
+    return queueFront;
+}
+
 bool OrderManager::isEmpty() {
     if (queueFront == nullptr) {
         return true;

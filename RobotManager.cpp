@@ -35,7 +35,7 @@ RobotManager::~RobotManager() {
     }
 }
 
-bool RobotManager::assignTask(std::string task) {
+Robot RobotManager::assignTask(std::string task) {
     //enqueue at rear
     int new_index = (last_robot_busy_index+1) % total_robots;
 
@@ -51,7 +51,7 @@ bool RobotManager::assignTask(std::string task) {
             }
             new_index = (new_index + 1) % total_robots;
         }
-        if(!isFound) return false;
+        if(!isFound) return Robot();
     }
 
     if(current_index == -1 || is_empty) {
@@ -60,7 +60,7 @@ bool RobotManager::assignTask(std::string task) {
         is_empty = false;
     }else if (new_index == current_index && !is_empty){
         //means full, not empty
-        return false;
+        return Robot();
     }
 
     last_robot_busy_index = new_index;
@@ -83,11 +83,7 @@ bool RobotManager::assignTask(std::string task) {
     robots[last_robot_busy_index].current_task = task;
     robots[last_robot_busy_index].numOfTask += 1;
 
-    std::cout << "\nDEBUG ASSIGN\n";
-    std::cout << "Assigned to: " << robots[last_robot_busy_index].r_id << '\n';
-    std::cout << "current_index = " << current_index << '\n';
-    std::cout << "last_robot_busy_index = " << last_robot_busy_index << '\n';
-    return true;
+    return robots[last_robot_busy_index];
 }
 
 void RobotManager::completeTask() {
@@ -95,14 +91,6 @@ void RobotManager::completeTask() {
         std::cout << "There are no tasks to be completed!" << std::endl;
         return;
     };
-
-    std::cout << "\nDEBUG COMPLETE\n";
-    std::cout << "current_index = " << current_index << '\n';
-    std::cout << "last_robot_busy_index = " << last_robot_busy_index << '\n';
-    std::cout << "robot = " << robots[current_index].r_id << '\n';
-    std::cout << "task = " << robots[current_index].current_task << '\n';
-
-    
 
     //dequeue at front
     robots[current_index].current_task = "";
@@ -113,7 +101,7 @@ void RobotManager::completeTask() {
     while (cur != NULL){
         if(cur->r_id == robots[current_index].r_id && cur->t_status == 0){
             cur->t_status = 1;
-            std::cout<< "Sucesfully completed task, " << cur->t_id << std::endl;
+            std::cout<< "Sucesfully completed task for " << cur->t_id << std::endl;
             break;
         }
         cur = cur->nextRecord;
@@ -160,7 +148,7 @@ void RobotManager::displayActiveTask() {
 void RobotManager::displayRobotStatus() {
     using namespace std;
             
-    cout << "Robot Status" << endl;
+    cout << "Robot Status..." << endl;
     cout << left << setw(15) << "Robot ID" 
             << setw(18) << "Current Task" 
             << setw(15) << "Status" 

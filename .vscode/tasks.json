@@ -10,6 +10,9 @@
                 "${file}",
                 "RobotManager.cpp",
                 "OrderManager.cpp",
+                "Layout.cpp",
+                "Navigation.cpp",
+                "Stack.cpp",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],
