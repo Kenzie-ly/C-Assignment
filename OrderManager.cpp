@@ -27,7 +27,7 @@ void OrderManager::addOrder(std::string customerName, std::string itemName) {
     }
 }
 
-std::string OrderManager::getOrder() {
+Order* OrderManager::getOrder() {
     if (isEmpty()) {
         return nullptr;
     }
@@ -38,7 +38,7 @@ std::string OrderManager::getOrder() {
     }
     order -> Status = "Processing";
     queueCount--;
-    return order->ItemName;
+    return order;
 }
 
 bool OrderManager::isEmpty() {
