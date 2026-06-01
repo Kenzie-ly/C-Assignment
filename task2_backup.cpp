@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 
 struct Robot {
     std::string r_id;
@@ -156,11 +157,15 @@ class RobotManager{
                 if(robots[i].r_status == 0){
                     if(!isFound){
                         cout << "Active Task" << endl;
-                        cout << "Task ID\t\tRobot ID\t\tStatus\n";
+                        cout << left << setw(15) << "Task ID" 
+                             << setw(15) << "Robot ID" 
+                             << setw(15) << "Status" << endl;
                         isFound = true;
                     }
                     
-                    cout << this->robots[i].current_task << "\t\t" << this->robots[i].r_id << "\t\t" << "In Progress" << endl;
+                    cout << left << setw(15) << this->robots[i].current_task 
+                         << setw(15) << this->robots[i].r_id 
+                         << setw(15) << "In Progress" << endl;
                 }
             }
 
@@ -171,17 +176,17 @@ class RobotManager{
             using namespace std;
             
             cout << "Robot Status" << endl;
-            cout << "Robot ID\t\tCurrent Task\t\tStatus\t\tNumber of Tasks Completed\n";
+            cout << left << setw(15) << "Robot ID" 
+                 << setw(18) << "Current Task" 
+                 << setw(15) << "Status" 
+                 << setw(30) << "Number of Tasks Completed" << endl;
             
             for (int i=0; i <total_robots; i++ ){
 
-                cout << robots[i].r_id 
-                    << "\t\t" 
-                    << ((robots[i].current_task == "") ? "None" : robots[i].current_task ) 
-                    << "\t\t" 
-                    << checkStatus(robots[i].r_status, 'r') 
-                    << "\t\t" 
-                    << robots[i].numOfTask << endl;
+                cout << left << setw(15) << robots[i].r_id 
+                     << setw(18) << ((robots[i].current_task == "") ? "None" : robots[i].current_task) 
+                     << setw(15) << checkStatus(robots[i].r_status, 'r') 
+                     << setw(30) << robots[i].numOfTask << endl;
             }
         }
 
@@ -195,9 +200,13 @@ class RobotManager{
 
             AssignmentRecord* cur = task_record_head;
             
-            cout << "Task ID\t\tRobot ID\t\tTask Status\n";
+            cout << left << setw(15) << "Task ID" 
+                 << setw(15) << "Robot ID" 
+                 << setw(15) << "Task Status" << endl;
             while (cur != nullptr){
-                cout << cur->t_id << "\t\t" << cur->r_id << "\t\t" << checkStatus(cur->t_status, 't') << endl;
+                cout << left << setw(15) << cur->t_id 
+                     << setw(15) << cur->r_id 
+                     << setw(15) << checkStatus(cur->t_status, 't') << endl;
                 cur = cur->nextRecord;
             }
         }

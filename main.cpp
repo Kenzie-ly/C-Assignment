@@ -26,8 +26,9 @@ void robotMenu(RobotManager& robotManager){
             cout << "Enter task id: ";
             cin >> task_id;
 
-            if (robotManager.assignTask(task_id)) cout << "Successfully assigining task!" << endl; else cout << "Sorry, no robots are available now!";
-        }else if(choice == 2) robotManager.completeTask();
+            if (robotManager.assignTask(task_id)) cout << "Successfully assigining task!" << endl; else cout << "Sorry, no robots are available now!"<<endl;
+        }
+        else if(choice == 2) robotManager.completeTask();
         else if (choice == 4) robotManager.displayAssignmentList();
         else if (choice == 5) robotManager.displayActiveTask();
         else if (choice == 6) robotManager.displayRobotStatus(); 
