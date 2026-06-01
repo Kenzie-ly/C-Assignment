@@ -30,4 +30,5 @@ class OrderManager {
     bool historyIsEmpty();
     int getQueueCount();
     void displayOrders(int choice);
+    void markCompleted(int orderID);
 };

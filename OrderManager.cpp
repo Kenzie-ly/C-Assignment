@@ -97,3 +97,16 @@ void OrderManager::displayOrders(int choice) {
     }
     std::cout << " " << std::endl;
 }
+
+// Will try find a better solution than this
+void OrderManager::markCompleted(int orderID) {
+    // If an order can be marked, it already exists (Guarded in getOrder)
+    Order* current = orderHistoryHead;
+    while (current != nullptr) {
+        if (current->OrderID == orderID) {
+            current->Status == "Completed";
+            return;
+        }
+        current = current->NextOrder;
+    }
+}
