@@ -1,5 +1,6 @@
 #include "Layout.h"
 #include <iostream>
+#include <cstring>
 
 Layout::Layout()
 {
@@ -36,6 +37,8 @@ Layout::Layout()
     setAisle(zoneBShelfRows, 3, zoneBAisleCols, 6);
     setAisle(zoneCShelfRows, 3, zoneCAisleCols, 6);
     setAisle(zoneDShelfRows, 3, zoneDAisleCols, 6);
+
+    memcpy(baseGrid, grid, sizeof(grid));
 }
 
 void Layout::setShelf(int rows[], int rowSize, int cols[], int colSize)
@@ -58,17 +61,68 @@ void Layout::display()
     {
         for (int c = 0; c < 45; c++)
         {
-            switch (grid[r][c]) {
-            case WALKABLE: std::cout << "\033[100m  \033[0m"; break;  // gray
-            case OBSTACLE: std::cout << "\033[46m  \033[0m"; break; // dark red
-            case ZONE_A:   std::cout << "\033[41m  \033[0m"; break;   // red
-            case ZONE_B:   std::cout << "\033[42m  \033[0m"; break;   // green
-            case ZONE_C:   std::cout << "\033[44m  \033[0m"; break;   // blue
-            case ZONE_D:   std::cout << "\033[43m  \033[0m"; break;   // yellow
-            case SHELF:    std::cout << "\033[40m  \033[0m"; break;   // black
-            case AISLE:    std::cout << "\033[47m  \033[0m"; break;   // white
+            if (grid[r][c] == OCCUPIED)
+                std::cout << "\033[45m  \033[0m";
+
+            else
+            {
+                switch (grid[r][c]) 
+                {
+                case WALKABLE: std::cout << "\033[100m  \033[0m"; break;  // gray
+                case OBSTACLE: std::cout << "\033[46m  \033[0m"; break; // dark red
+                case ZONE_A:   std::cout << "\033[41m  \033[0m"; break;   // red
+                case ZONE_B:   std::cout << "\033[42m  \033[0m"; break;   // green
+                case ZONE_C:   std::cout << "\033[44m  \033[0m"; break;   // blue
+                case ZONE_D:   std::cout << "\033[43m  \033[0m"; break;   // yellow
+                case SHELF:    std::cout << "\033[40m  \033[0m"; break;   // black
+                case AISLE:    std::cout << "\033[47m  \033[0m"; break;   // white
+                }
             }
         }
         std::cout << '\n';
     }
+}
+
+void Layout::update()
+{
+
+}
+
+bool Layout::occupyLocation(int r, int c)
+{
+    grid[r][c] = OCCUPIED;
+    return true;
+}
+
+bool Layout::deoccupyLocation(int r, int c)
+{
+    if (grid[r][c] == OCCUPIED)
+    {
+        grid[r][c] = baseGrid[r][c];
+        return true;
+    }
+    return false;
+}
+
+int* Layout::getZoneCol(int zone)
+{
+    if (zone == 1) return zoneAAisleCols;
+    if (zone == 2) return zoneBAisleCols;
+    if (zone == 3) return zoneCAisleCols;
+    if (zone == 4) return zoneDAisleCols;
+    return nullptr;
+}
+
+int* Layout::getZoneRow(int zone)
+{
+    if (zone == 1) return zoneAShelfRows;
+    if (zone == 2) return zoneBShelfRows;
+    if (zone == 3) return zoneCShelfRows;
+    if (zone == 4) return zoneDShelfRows;
+    return nullptr;
+}
+
+bool Layout::isObstacle(int r, int c)
+{
+    return grid[r][c] == OBSTACLE || grid[r][c] == SHELF;
 }

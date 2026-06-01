@@ -14,6 +14,8 @@ struct Robot {
     int r_status;
     std::string current_task;
     int numOfTask = 0;
+    int currentRow;
+    int currentCol;
 };
 
 class RobotManager {
