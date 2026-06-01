@@ -1,5 +1,4 @@
 #pragma once
-#include "Robot.h"
 #include <string>
 
 struct AssignmentRecord {
