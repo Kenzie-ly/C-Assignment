@@ -1,9 +1,11 @@
 #include "RobotManager.h"
 #include <iostream>
 #include <iomanip>
+#include "Navigation.h"
 
-RobotManager::RobotManager(int capacity) {
+RobotManager::RobotManager(int capacity, Navigation* nav) {
     Robot robot;
+    this->nav = nav;
 
     current_index = -1;
     last_robot_busy_index = -1;
@@ -18,6 +20,8 @@ RobotManager::RobotManager(int capacity) {
         robot.r_status = 1;
         robot.numOfTask = 0;
         robot.current_task = "";
+        robot.movementLogs = new std::string[200];
+        robot.stack = new Stack(200);
 
         robots[i] = robot;
     }

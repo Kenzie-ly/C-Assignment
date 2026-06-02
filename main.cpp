@@ -5,8 +5,9 @@
 #include "OrderManager.h"
 #include "Navigation.h"
 #include "bstree.h"
+#include <sstream>
 
-void processAllOrders(RobotManager& robotManager, OrderManager& orderManager){
+void processAllOrders(RobotManager& robotManager, OrderManager& orderManager, BST& itemDB){
     using namespace std;
 
     if (orderManager.isEmpty()){
@@ -21,10 +22,10 @@ void processAllOrders(RobotManager& robotManager, OrderManager& orderManager){
         cout << "Item Name: " << order->ItemName << endl;
 
         cout << "\nAssigning robot..." << endl;
-        string order_id = "ORD-" + to_string(order->OrderID);
-        string robot_id = robotManager.assignTask(order_id).r_id;
-        
-        if (robot_id == "") {
+        string order_id = to_string(order->OrderID);
+        Robot robot = robotManager.assignTask(order_id);
+        std::string robot_id = robot.r_id;
+        if (robot.r_id == "") {
             cout << "No robot available. Stopping order processing.\n";
             return;
         }
@@ -35,7 +36,29 @@ void processAllOrders(RobotManager& robotManager, OrderManager& orderManager){
         orderManager.getOrder();
         
         cout << "\nLocating the item..." << endl;
-        // cout << "Item located at (" << order->x << ", " << order->y << ")" << endl;
+        std::string location = itemDB.getLocation(order->ItemName);
+        std::stringstream split(location);
+        std::string zone, aisle, shelf;
+        std::cout << location << '\n';
+        int z= 0, a = 0, s = 0;
+        std::getline(split, zone, ',');
+        std::getline(split, aisle, ',');
+        std::getline(split, shelf, ',');
+
+        if (zone == "Zone-A") z = 1;
+        else if (zone == "Zone-B") z = 2;
+        else if (zone == "Zone-C") z = 3;
+        else if (zone == "Zone-D") z = 4;
+
+        if (aisle == "Aisle-1") a = 1;
+        else if (aisle == "Aisle-2") a = 2;
+        else if (aisle == "Aisle-3") a = 3;
+
+        if (shelf == "Shelf-1") s = 1;
+        else if (shelf == "Shelf-2") s = 2;
+        robot.targetAisle = a;
+        robot.targetShelf = s;
+        robot.targetZone = z;
 
         cout << "\nPicking up the item..." << endl;
         cout << "Item Name: " << order->ItemName << endl;
@@ -49,7 +72,7 @@ void processAllOrders(RobotManager& robotManager, OrderManager& orderManager){
     }
 }
 
-void robotMenu(RobotManager& robotManager, OrderManager& orderManager){
+void robotMenu(RobotManager& robotManager, OrderManager& orderManager, BST& itemDB){
     using namespace std;
 
     while (true){
@@ -58,13 +81,14 @@ void robotMenu(RobotManager& robotManager, OrderManager& orderManager){
         cout << "2. Set maintenance status" << endl;
         cout << "3. Display robot assignment" << endl; //task id, robit id
         cout << "4. Display robot status" << endl; //robot id, cur task, status, num of completed task
+        cout << "5. Display robot movement" << endl;
 
-        cout << "5. Exit" << endl;
+        cout << "6. Exit" << endl;
         cout << "Input: ";
         int choice;
         cin >> choice;
         
-        if (choice == 1) processAllOrders(robotManager, orderManager);
+        if (choice == 1) processAllOrders(robotManager, orderManager, itemDB);
         else if (choice == 2){
             char id;
             int num;
@@ -81,7 +105,12 @@ void robotMenu(RobotManager& robotManager, OrderManager& orderManager){
         }
         else if (choice == 3) robotManager.displayAssignmentList();
         else if (choice == 4) robotManager.displayRobotStatus(); 
-        else if (choice == 5) break;
+        else if (choice == 5)
+        {
+            cout << "Select a robot to view:" << endl;
+
+        }
+        else if (choice == 6) break;
     }
 }
 
@@ -215,16 +244,14 @@ int main(){
 
     Layout layout;
     Navigation* navigation = new Navigation(layout);
-    Robot robot;
-    robot.currentCol = 0;
-    robot.currentRow = 14;
-    navigation->moveRobot(&robot, 4, 2, 2);
+
     int capacity;
     OrderManager orderManager;
     BST itemDB;
+
     std::cout << "Enter the number of robots in warehouse: ";
     std::cin >> capacity;
-    RobotManager robotManager(capacity);
+    RobotManager robotManager(capacity, navigation);
 
     int mainMenuChoice;
     bool exitSystem = false;
@@ -247,7 +274,7 @@ int main(){
                 break;
             }
             case 2: {
-                robotMenu(robotManager, orderManager);
+                robotMenu(robotManager, orderManager, itemDB);
                 break;
             }
             case 3: {

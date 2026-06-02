@@ -139,6 +139,9 @@
     <ClInclude Include="RobotManager.h" />
     <ClInclude Include="Stack.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="items.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
