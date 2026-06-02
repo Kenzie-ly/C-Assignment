@@ -1,8 +1,8 @@
 #include <iostream>
-#include "Navigation.h"
-#include "Layout.h"
+#include "Navigation.hpp"
+#include "Layout.hpp"
 #include <windows.h>
-#include "RobotManager.h"
+#include "RobotManager.hpp"
 
 void Navigation::moveRobot(Robot* robot, int zone, int aisle, int shelf)
 {

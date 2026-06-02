@@ -1,4 +1,4 @@
-#include "bstree.h"
+#include "bstree.hpp"
 
 //constructor, this initializes root and loads data from file
 BST::BST() : root(nullptr) {

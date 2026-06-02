@@ -1,10 +1,10 @@
 #include <iostream>
 #include <string>
-#include "RobotManager.h"
-#include "Layout.h"
-#include "OrderManager.h"
-#include "Navigation.h"
-#include "bstree.h"
+#include "RobotManager.hpp"
+#include "Layout.hpp"
+#include "OrderManager.hpp"
+#include "Navigation.hpp"
+#include "bstree.hpp"
 #include <sstream>
 
 void processAllOrders(RobotManager& robotManager, OrderManager& orderManager, BST& itemDB){
@@ -71,12 +71,21 @@ void processAllOrders(RobotManager& robotManager, OrderManager& orderManager, BS
 void markComplete(RobotManager& robotManager, OrderManager& orderManager){
     using namespace std;
 
-    cout << "\nPicking up the item..." << endl;
-
-    cout << "Delivering the item to packing station...\n" << endl;
-
     Order* order = robotManager.completeTask();
-    orderManager.markCompleted(order->OrderID);
+    if (order == nullptr) {
+        return;
+    }
+
+    while (order != nullptr) {
+        cout << "\nPicking up the " << order->ItemNode->name << "..." << endl;
+
+        cout << "Delivering the " << order->ItemNode->name << " to packing station...\n" << endl;
+        
+        orderManager.markCompleted(order->OrderID);
+        cout << "Order " << order->OrderID << " has been completed!\n";
+
+        order = robotManager.completeTask();
+    }
 
     cout << "\n\n";
 }
@@ -125,12 +134,13 @@ void robotMenu(RobotManager& robotManager, OrderManager& orderManager, BST& item
             cout << "Select robot to display movement: ";
             cin >> r_id;
             
-            robotManager.displaySelectedRobotAssignmentList(r_id);
-            cout << "Select task to display movement: ";
-            cin >> task;
-            
-            AssignmentRecord* record = robotManager.getRecord(r_id, task);
-            robotManager.nav->moveRobot(record->robot, record->targetLocation.zone, record->targetLocation.aisle, record->targetLocation.shelf);
+            if (robotManager.displaySelectedRobotAssignmentList(r_id)) {
+                cout << "Select task to display movement: ";
+                cin >> task;
+                
+                AssignmentRecord* record = robotManager.getRecord(r_id, task);
+                robotManager.nav->moveRobot(record->robot, record->targetLocation.zone, record->targetLocation.aisle, record->targetLocation.shelf);
+            }
         } 
         else if (choice == 7) break;
     }

@@ -1,7 +1,7 @@
-#include "RobotManager.h"
+#include "RobotManager.hpp"
 #include <iostream>
 #include <iomanip>
-#include "Navigation.h"
+#include "Navigation.hpp"
 
 RobotManager::RobotManager(int capacity, Navigation* nav) {
     Robot robot;
@@ -114,7 +114,6 @@ Order* RobotManager::completeTask() {
     while (cur != NULL){
         if(cur->robot->r_id == robots[current_index].r_id && cur->t_status == 0){
             cur->t_status = 1;
-            std::cout<< "Sucesfully completed task for " << std::to_string(cur->order->OrderID) << std::endl;
             break;
         }
         cur = cur->nextRecord;
@@ -200,23 +199,33 @@ void RobotManager::displayAssignmentList() {
     }
 }
 
-void RobotManager::displaySelectedRobotAssignmentList(std::string r_id)
+bool RobotManager::displaySelectedRobotAssignmentList(std::string r_id)
 {
     if (task_record_head == NULL) {
         std::cout << "There are no tasks assigned yet." << std::endl;
-        return;
+        return false;
     }
 
     AssignmentRecord* cur = task_record_head;
+    bool found = false;
 
     while (cur != nullptr) {
         if (cur->robot->r_id == r_id)
         {
-            std::cout << "Tasks:" << '\n';
+            if (!found) {
+                std::cout << "Tasks:" << '\n';
+                found = true;
+            }
             std::cout << std::left << std::setw(15) << std::to_string(cur->order->OrderID) << std::endl;
         }
         cur = cur->nextRecord;
     }
+
+    if (!found) {
+        std::cout << "There are no tasks assigned to robot " << r_id << " yet." << std::endl;
+    }
+
+    return found;
 }
 
 std::string RobotManager::checkStatus(int status, char code) {

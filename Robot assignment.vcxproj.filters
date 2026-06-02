@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -38,22 +38,22 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Stack.h">
+    <ClInclude Include="Stack.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RobotManager.h">
+    <ClInclude Include="RobotManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Navigation.h">
+    <ClInclude Include="Navigation.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Layout.h">
+    <ClInclude Include="Layout.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bstree.h">
+    <ClInclude Include="bstree.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OrderManager.h">
+    <ClInclude Include="OrderManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

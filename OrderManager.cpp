@@ -1,7 +1,7 @@
 #include <string>
 #include <iostream>
-#include "OrderManager.h"
-#include "bstree.h"
+#include "OrderManager.hpp"
+#include "bstree.hpp"
 
 OrderManager::OrderManager() {
     queueFront = nullptr;

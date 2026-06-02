@@ -1,7 +1,6 @@
 #pragma once
-#include "Stack.h"
-#include "Navigation.h"
-#include "RobotManager.h"
+#include "Stack.hpp"
+#include "RobotManager.hpp"
 
 class Layout;
 class Robot;

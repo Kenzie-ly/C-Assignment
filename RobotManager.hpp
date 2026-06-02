@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
-#include "Stack.h"
-#include "OrderManager.h"
+#include "Stack.hpp"
+#include "OrderManager.hpp"
 
 class Navigation;
 
@@ -63,7 +63,7 @@ class RobotManager {
 
         void displayAssignmentList();
 
-        void displaySelectedRobotAssignmentList(std::string r_id);
+        bool displaySelectedRobotAssignmentList(std::string r_id);
 
         void setMaintenanceStatus(std::string r_id, bool status);
 
