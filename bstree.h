@@ -55,6 +55,14 @@ public:
 	void remove(const std::string& id);
 	void displaySorted();
 
+	// Counting Item
+	int getItemCount();
+	void countHelper(BSTNode* root, int& count);
+
+	// Get Item by Index
+	BSTNode* getItemByIndex(int index);
+	BSTNode* getItemByIndexHelper(BSTNode* root, int index, int& current);
+
 	//initial interface created for providing location string for task3, commented out for possible later use.
 	std::string getLocation(const std::string& id);
 };

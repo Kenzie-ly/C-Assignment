@@ -1,15 +1,17 @@
 #pragma once
 #include <string>
+#include "bstree.h"
 
 struct Order {
     int OrderID;
-    std::string CustomerName, ItemName, Status;
+    std::string CustomerName, Status;
+    Item* ItemNode;
     Order* NextOrder;
 
-    Order(int orderID, std::string customerName, std::string itemName, std::string status) {
+    Order(int orderID, std::string customerName, Item* item, std::string status) {
         OrderID = orderID;
         CustomerName = customerName;
-        ItemName = itemName;
+        ItemNode = item;
         Status = status;
         NextOrder = nullptr;
     }
@@ -24,9 +26,9 @@ class OrderManager {
 
     public:
     OrderManager();
-    void addOrder(std::string customerName, std::string itemName);
+    void addOrder(std::string customerName, Item* item);
     Order* getOrder();
-    Order* peakOrder();
+    Order* peekOrder();
     bool isEmpty();
     bool historyIsEmpty();
     int getQueueCount();

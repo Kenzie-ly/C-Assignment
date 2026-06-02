@@ -278,6 +278,36 @@ void BST::displaySorted() {
 	displaySortedHelper(root);
 	std::cout << "========================================\n";
 }
+
+int BST::getItemCount() {
+	int count = 0;
+	countHelper(root, count);
+	return count;
+}
+
+void BST::countHelper(BSTNode* root, int& count) {
+	if (root == nullptr) { return; }
+	count++; // Increase count if the node exist
+	countHelper(root->left, count);
+	countHelper(root->right, count);
+}
+
+BSTNode* BST::getItemByIndex(int index) {
+	int current = 0;
+	return getItemByIndexHelper(root, index, current);
+}
+
+BSTNode* BST::getItemByIndexHelper(BSTNode* root, int index, int& current) {
+	if (root == nullptr) { return nullptr; }
+	BSTNode* left = getItemByIndexHelper(root->left, index, current);
+	if (left != nullptr) {
+		return left;
+	}
+	if (current == index) { return root; }
+	current++;
+	return getItemByIndexHelper(root->right, index, current);
+}
+
 // 
 // GET LOCATION
 // Returns formatted location string for Task 3 integration

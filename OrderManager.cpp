@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include "OrderManager.h"
+#include "bstree.h"
 
 OrderManager::OrderManager() {
     queueFront = nullptr;
@@ -10,9 +11,9 @@ OrderManager::OrderManager() {
     queueCount = 0;
 }
 
-void OrderManager::addOrder(std::string customerName, std::string itemName) {
+void OrderManager::addOrder(std::string customerName, Item* item) {
     std::string status = "Pending";
-    Order* newOrder = new Order(orderID, customerName, itemName, status);
+    Order* newOrder = new Order(orderID, customerName, item, status);
     orderID++;
     if (isEmpty()) {
         queueFront = newOrder;
@@ -41,7 +42,7 @@ Order* OrderManager::getOrder() {
     return order;
 }
 
-Order* OrderManager::peakOrder() {
+Order* OrderManager::peekOrder() {
     return queueFront;
 }
 
@@ -83,7 +84,7 @@ void OrderManager::displayOrders(int choice) {
         while (current != nullptr) {
             std::cout << "OrderID: " << current->OrderID << std::endl;
             std::cout << "Customer Name: " << current->CustomerName << std::endl;
-            std::cout << "Item Name: " << current->ItemName << std::endl;
+            std::cout << "Item Name: " << current->ItemNode->name << std::endl;
             std::cout << "Status: " << current->Status << std::endl;
             current = current->NextOrder;
         }
@@ -94,7 +95,7 @@ void OrderManager::displayOrders(int choice) {
         if (current->Status == statusChoice) {
             std::cout << "OrderID: " << current->OrderID << std::endl;
             std::cout << "Customer Name: " << current->CustomerName << std::endl;
-            std::cout << "Item Name: " << current->ItemName << std::endl;
+            std::cout << "Item Name: " << current->ItemNode->name << std::endl;
             std::cout << "Status: " << current->Status << std::endl; // Useless, the status choice has been picked, so this is redundant. Only for testing purposes.
         }
         current = current->NextOrder;
