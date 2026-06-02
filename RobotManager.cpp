@@ -97,13 +97,13 @@ Robot RobotManager::assignTask(Order* task, Location location) {
     return robots[last_robot_busy_index];
 }
 
-Order* RobotManager::completeTask() {
+Robot* RobotManager::completeTask() {
     if(is_empty || current_index == -1){
         std::cout << "There are no tasks to be completed!" << std::endl;
         return nullptr;
     };
 
-    Order* completedOrder = robots[current_index].current_task;
+    Robot* completedRobot = &robots[current_index];
 
     //dequeue at front
     robots[current_index].current_task = nullptr;
@@ -112,7 +112,7 @@ Order* RobotManager::completeTask() {
     //update assignment record
     AssignmentRecord* cur = task_record_head;
     while (cur != NULL){
-        if(cur->robot->r_id == robots[current_index].r_id && cur->t_status == 0){
+        if(cur->robot->r_id == completedRobot->r_id && cur->t_status == 0){
             cur->t_status = 1;
             break;
         }
@@ -125,7 +125,14 @@ Order* RobotManager::completeTask() {
         is_empty = true;
     }
 
-    return completedOrder;
+    return completedRobot;
+}
+
+Robot* RobotManager::peekRobot() {
+    if (is_empty || current_index == -1) {
+        return nullptr;
+    }
+    return &robots[current_index];
 }
 
 void RobotManager::displayActiveTask() {

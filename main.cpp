@@ -71,20 +71,24 @@ void processAllOrders(RobotManager& robotManager, OrderManager& orderManager, BS
 void markComplete(RobotManager& robotManager, OrderManager& orderManager){
     using namespace std;
 
-    Order* order = robotManager.completeTask();
-    if (order == nullptr) {
+    Robot* robot = robotManager.peekRobot();
+    if (robot == nullptr) {
+        cout << "There are no tasks to be completed!" << endl;
         return;
     }
 
-    while (order != nullptr) {
-        cout << "\nPicking up the " << order->ItemNode->name << "..." << endl;
-
-        cout << "Delivering the " << order->ItemNode->name << " to packing station...\n" << endl;
+    while (robot != nullptr) {
+        Order* order = robot->current_task;
+        if (order != nullptr) {
+            cout << "\nPicking up the " << order->ItemNode->name << "..." << endl;
+            cout << "Delivering the " << order->ItemNode->name << " to packing station...\n" << endl;
+            
+            orderManager.markCompleted(order->OrderID);
+            cout << "Order " << order->OrderID << " has been completed!\n";
+        }
         
-        orderManager.markCompleted(order->OrderID);
-        cout << "Order " << order->OrderID << " has been completed!\n";
-
-        order = robotManager.completeTask();
+        robotManager.completeTask();
+        robot = robotManager.peekRobot();
     }
 
     cout << "\n\n";

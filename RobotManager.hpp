@@ -55,7 +55,8 @@ class RobotManager {
 
         Robot assignTask(Order* task, Location location);
 
-        Order* completeTask();
+        Robot* completeTask();
+        Robot* peekRobot();
 
         void displayActiveTask();
 
