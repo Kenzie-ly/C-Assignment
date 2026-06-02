@@ -107,16 +107,18 @@ void robotMenu(RobotManager& robotManager, OrderManager& orderManager, BST& item
         else if (choice == 3) robotManager.displayAssignmentList();
         else if (choice == 4) robotManager.displayRobotStatus();
         else if (choice == 5){
-
+            robotManager.displayRobotStatus();//all r_id
 
             std::string r_id;
             std::string task;
 
             cout << "Select robot to display movement:";
             cin >> r_id;
-            robotManager.displaySelectedRobotAssignmentList();
+            
+            robotManager.displaySelectedRobotAssignmentList(r_id);
             cout << "Select task to display movement:";
             cin >> task;
+            
             
             AssignmentRecord* record = robotManager.getRecord(r_id, task);
             robotManager.nav->moveRobot(&record->robot, record->targetLocation.zone, record->targetLocation.aisle, record->targetLocation.shelf);

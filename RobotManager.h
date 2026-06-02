@@ -62,7 +62,7 @@ class RobotManager {
 
         void displayAssignmentList();
 
-        void displaySelectedRobotAssignmentList(Robot* robot);
+        void displaySelectedRobotAssignmentList(std::string r_id);
 
         void setMaintenanceStatus(std::string r_id, bool status);
 

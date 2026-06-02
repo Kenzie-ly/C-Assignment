@@ -198,7 +198,7 @@ void RobotManager::displayAssignmentList() {
     }
 }
 
-void RobotManager::displaySelectedRobotAssignmentList(Robot* robot)
+void RobotManager::displaySelectedRobotAssignmentList(std::string r_id)
 {
     if (task_record_head == NULL) {
         std::cout << "There are no tasks assigned yet." << std::endl;
@@ -208,7 +208,7 @@ void RobotManager::displaySelectedRobotAssignmentList(Robot* robot)
     AssignmentRecord* cur = task_record_head;
 
     while (cur != nullptr) {
-        if (cur->robot.r_id == robot->r_id)
+        if (cur->robot.r_id == r_id)
         {
             std::cout << std::left << std::setw(15) << cur->t_id;
             cur = cur->nextRecord;
