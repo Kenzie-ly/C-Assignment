@@ -14,11 +14,11 @@ void processAllOrders(RobotManager& robotManager, OrderManager& orderManager){
     }
 
     while (!orderManager.isEmpty()){
-        Order* order = orderManager.peakOrder();
+        Order* order = orderManager.peekOrder();
 
         cout << "\nReading Order..." << endl;
         cout << "OrderID: " << order->OrderID << endl;
-        cout << "Item Name: " << order->ItemName << endl;
+        cout << "Item Name: " << order->ItemNode->name << endl;
 
         cout << "\nAssigning robot..." << endl;
         string order_id = "ORD-" + to_string(order->OrderID);
@@ -38,7 +38,7 @@ void processAllOrders(RobotManager& robotManager, OrderManager& orderManager){
         // cout << "Item located at (" << order->x << ", " << order->y << ")" << endl;
 
         cout << "\nPicking up the item..." << endl;
-        cout << "Item Name: " << order->ItemName << endl;
+        cout << "Item Name: " << order->ItemNode->name << endl;
 
         cout << "\nDelivering the item to packing station..." << endl;
 
@@ -85,11 +85,13 @@ void robotMenu(RobotManager& robotManager, OrderManager& orderManager){
     }
 }
 
-void orderMenu(OrderManager& orderManager) {
+void orderMenu(OrderManager& orderManager, BST& itemDB) {
     int orderChoice;
     int displayOrderChoice;
+    int itemChoice;
+    int totalItem;
     std::string customerName;
-    std::string itemName;
+    BSTNode* selectedItem = nullptr;
     while (true) {
         std::cout << "============================================" << std::endl;
         std::cout << "=================ORDER MENU=================" << std::endl;
@@ -106,10 +108,20 @@ void orderMenu(OrderManager& orderManager) {
             case 1: {
                 std::cout << "Customer Name: ";
                 std::cin >> customerName;
-                // For loop display item
-                std::cout << "Item Name: ";
-                std::cin >> itemName;
-                orderManager.addOrder(customerName, itemName);
+                std::cout << "=============================================" << std::endl;
+                std::cout << "===============Available Items===============" << std::endl;
+                std::cout << "=============================================" << std::endl;
+                totalItem = itemDB.getItemCount();
+                for (int i = 0; i < totalItem; i++) {
+                    BSTNode* node = itemDB.getItemByIndex(i);
+                    std::cout << i + 1 << ". " << node->data.name << std::endl;
+                }
+                std::cout << "Item Choice: ";
+                // Match choice with item name
+                std::cin >> itemChoice;
+                selectedItem = itemDB.getItemByIndex(itemChoice - 1);
+                if (selectedItem == nullptr) { break; }
+                orderManager.addOrder(customerName, &selectedItem->data);
                 std::cout << "Order has been successfully added!" << std::endl;
                 std::cout << " " << std::endl;
                 break;
@@ -215,10 +227,10 @@ int main(){
 
     Layout layout;
     Navigation* navigation = new Navigation(layout);
-    Robot robot;
-    robot.currentCol = 0;
-    robot.currentRow = 14;
-    navigation->moveRobot(&robot, 4, 2, 2);
+    // Robot robot;
+    // robot.currentCol = 0;
+    // robot.currentRow = 14;
+    // navigation->moveRobot(&robot, 4, 2, 2);
     int capacity;
     OrderManager orderManager;
     BST itemDB;
@@ -243,7 +255,7 @@ int main(){
 
         switch (mainMenuChoice) {
             case 1: {
-                orderMenu(orderManager);
+                orderMenu(orderManager, itemDB);
                 break;
             }
             case 2: {
