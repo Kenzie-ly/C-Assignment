@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "Stack.h"
+#include "OrderManager.h"
 
 class Navigation;
 
@@ -13,11 +14,11 @@ struct Location {
 struct Robot {
     std::string r_id;
     int r_status;
-    std::string current_task;
+    Order* current_task;
     int numOfTask = 0;
     int currentRow;
     int currentCol;
-    Location current_target_location;
+    Location current_target_location; 
 
     //robot movement
     Stack* stack;
@@ -27,11 +28,11 @@ struct Robot {
 
 struct AssignmentRecord {
     //robot record, containing(robot id, task id, task status)
-    Robot robot;
-    std::string t_id;
+    Robot* robot;    
+    Order* order;
+    
     Location targetLocation;
     int t_status;
-    int robot_index;
     AssignmentRecord* nextRecord;
 };
 
@@ -52,9 +53,9 @@ class RobotManager {
 
         ~RobotManager();
 
-        Robot assignTask(std::string task, Location location);
+        Robot assignTask(Order* task, Location location);
 
-        void completeTask();
+        Order* completeTask();
 
         void displayActiveTask();
 

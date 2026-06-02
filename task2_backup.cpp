@@ -4,7 +4,7 @@
 struct Robot {
     std::string r_id;
     int r_status;
-    std::string current_task;
+    Order* current_task;
     int numOfTask = 0;
 };
 

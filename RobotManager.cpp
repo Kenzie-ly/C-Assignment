@@ -20,7 +20,7 @@ RobotManager::RobotManager(int capacity, Navigation* nav) {
         robot.r_id = "R" + std::to_string(i+1);
         robot.r_status = 1;
         robot.numOfTask = 0;
-        robot.current_task = "";
+        robot.current_task = nullptr;
         robot.movementLogs = new std::string[200];
         robot.stack = new Stack(200);
         robot.currentCol = 0;
@@ -43,7 +43,7 @@ RobotManager::~RobotManager() {
     }
 }
 
-Robot RobotManager::assignTask(std::string task, Location location) {
+Robot RobotManager::assignTask(Order* task, Location location) {
     //enqueue at rear
     int new_index = (last_robot_busy_index+1) % total_robots;
 
@@ -75,11 +75,10 @@ Robot RobotManager::assignTask(std::string task, Location location) {
 
 
     AssignmentRecord* newRecord = new AssignmentRecord();
-    newRecord->robot = robots[last_robot_busy_index];
-    newRecord->t_id = task;
+    newRecord->robot = &robots[last_robot_busy_index];
+    newRecord->order = task;
     newRecord->t_status = 0;
     newRecord->targetLocation = location;
-    newRecord->robot_index = last_robot_busy_index;
     newRecord->nextRecord = nullptr;
 
     if (task_record_head == nullptr){
@@ -98,22 +97,24 @@ Robot RobotManager::assignTask(std::string task, Location location) {
     return robots[last_robot_busy_index];
 }
 
-void RobotManager::completeTask() {
+Order* RobotManager::completeTask() {
     if(is_empty || current_index == -1){
         std::cout << "There are no tasks to be completed!" << std::endl;
-        return;
+        return nullptr;
     };
 
+    Order* completedOrder = robots[current_index].current_task;
+
     //dequeue at front
-    robots[current_index].current_task = "";
+    robots[current_index].current_task = nullptr;
     robots[current_index].r_status = 1;
 
     //update assignment record
     AssignmentRecord* cur = task_record_head;
     while (cur != NULL){
-        if(cur->robot.r_id == robots[current_index].r_id && cur->t_status == 0){
+        if(cur->robot->r_id == robots[current_index].r_id && cur->t_status == 0){
             cur->t_status = 1;
-            std::cout<< "Sucesfully completed task for " << cur->t_id << std::endl;
+            std::cout<< "Sucesfully completed task for " << std::to_string(cur->order->OrderID) << std::endl;
             break;
         }
         cur = cur->nextRecord;
@@ -124,6 +125,8 @@ void RobotManager::completeTask() {
     }else{
         is_empty = true;
     }
+
+    return completedOrder;
 }
 
 void RobotManager::displayActiveTask() {
@@ -148,7 +151,7 @@ void RobotManager::displayActiveTask() {
                 isFound = true;
             }
             
-            cout << left << setw(15) << this->robots[i].current_task 
+            cout << left << setw(15) << to_string(this->robots[i].current_task->OrderID) 
                     << setw(15) << this->robots[i].r_id 
                     << setw(15) << "In Progress" << endl;
         }
@@ -169,7 +172,7 @@ void RobotManager::displayRobotStatus() {
     for (int i=0; i <total_robots; i++ ){
 
         cout << left << setw(15) << robots[i].r_id 
-                << setw(18) << ((robots[i].current_task == "") ? "None" : robots[i].current_task) 
+                << setw(18) << ((robots[i].current_task == nullptr) ? "None" : to_string(robots[i].current_task->OrderID)) 
                 << setw(15) << checkStatus(robots[i].r_status, 'r') 
                 << setw(30) << robots[i].numOfTask << endl;
     }
@@ -190,8 +193,8 @@ void RobotManager::displayAssignmentList() {
             << setw(15) << "Task Status" << endl;
 
     while (cur != nullptr){
-        cout << left << setw(15) << cur->t_id 
-                << setw(15) << cur->robot.r_id 
+        cout << left << setw(15) << to_string(cur->order->OrderID) 
+                << setw(15) << cur->robot->r_id 
                 << setw(15) << checkStatus(cur->t_status, 't') << endl;
         cur = cur->nextRecord;
     }
@@ -207,10 +210,10 @@ void RobotManager::displaySelectedRobotAssignmentList(std::string r_id)
     AssignmentRecord* cur = task_record_head;
 
     while (cur != nullptr) {
-        if (cur->robot.r_id == r_id)
+        if (cur->robot->r_id == r_id)
         {
             std::cout << "Tasks:" << '\n';
-            std::cout << std::left << std::setw(15) << cur->t_id << std::endl;
+            std::cout << std::left << std::setw(15) << std::to_string(cur->order->OrderID) << std::endl;
         }
         cur = cur->nextRecord;
     }
@@ -259,10 +262,11 @@ AssignmentRecord* RobotManager::getRecord(std::string r_id, std::string task){
     AssignmentRecord* cur = task_record_head;
     
     while (cur != nullptr){
-        if(cur->robot.r_id == r_id && cur->t_id == task){
+        if(cur->robot->r_id == r_id && std::to_string(cur->order->OrderID) == task){
 
             return cur;
         }
         cur = cur->nextRecord;
     }
+    return nullptr;
 }

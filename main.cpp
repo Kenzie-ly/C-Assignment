@@ -21,10 +21,7 @@ void processAllOrders(RobotManager& robotManager, OrderManager& orderManager, BS
         cout << "OrderID: " << order->OrderID << endl;
         cout << "Item Name: " << order->ItemNode->name << endl;
 
-        cout << "\nAssigning robot..." << endl;
-        string order_id = to_string(order->OrderID);
-
-        cout << "\nLocating the item..." << endl;
+        cout << "\nGetting item location..." << endl;
         std::string location = itemDB.getLocation(order->ItemNode->id);
         std::stringstream split(location);
         std::string zone, aisle, shelf;
@@ -49,28 +46,39 @@ void processAllOrders(RobotManager& robotManager, OrderManager& orderManager, BS
         targetLocation.aisle = a;
         targetLocation.shelf = s;
 
-        Robot robot = robotManager.assignTask(order_id, targetLocation);
+        cout << "Zone: " << zone << endl;
+        cout << "Aisle: " << aisle << endl;
+        cout << "Shelf: " << shelf << endl;
+
+        cout << "\nAssigning robot..." << endl;
+        robotManager.displayRobotStatus();
+        cout << endl;
+
+        Robot robot = robotManager.assignTask(order, targetLocation);
         std::string robot_id = robot.r_id;
         if (robot.r_id == "") {
             cout << "No robot available. Stopping order processing.\n";
             return;
         }
-
-        cout << endl;
+        
         cout << "Assigned Robot ID: " << robot_id << endl;
-        robotManager.displayRobotStatus();
         orderManager.getOrder();
 
-        cout << "\nPicking up the item..." << endl;
-        cout << "Item Name: " << order->ItemNode->name << endl;
-
-        cout << "\nDelivering the item to packing station..." << endl;
-
-        orderManager.markCompleted(order->OrderID);
-        robotManager.completeTask();
-
-        cout << "\n\n\n";
+        cout << "\n\n";
     }
+}
+
+void markComplete(RobotManager& robotManager, OrderManager& orderManager){
+    using namespace std;
+
+    cout << "\nPicking up the item..." << endl;
+
+    cout << "Delivering the item to packing station...\n" << endl;
+
+    Order* order = robotManager.completeTask();
+    orderManager.markCompleted(order->OrderID);
+
+    cout << "\n\n";
 }
 
 void robotMenu(RobotManager& robotManager, OrderManager& orderManager, BST& itemDB){
@@ -78,19 +86,21 @@ void robotMenu(RobotManager& robotManager, OrderManager& orderManager, BST& item
 
     while (true){
         cout << endl;
-        cout << "1. Process all orders" << endl;
-        cout << "2. Set maintenance status" << endl;
-        cout << "3. Display robot assignment" << endl; //task id, robit id
-        cout << "4. Display robot status" << endl; //robot id, cur task, status, num of completed task
-        cout << "5. Display robot movement" << endl;
+        cout << "1. Allocate tasks" << endl;
+        cout << "2. Complete all tasks" << endl;
+        cout << "3. Set maintenance status" << endl;
+        cout << "4. Display robot assignment" << endl; //task id, robit id
+        cout << "5. Display robot status" << endl; //robot id, cur task, status, num of completed task
+        cout << "6. Display robot movement" << endl;
 
-        cout << "6. Exit" << endl;
+        cout << "7. Exit" << endl;
         cout << "Input: ";
         int choice;
         cin >> choice;
         
         if (choice == 1) processAllOrders(robotManager, orderManager, itemDB);
-        else if (choice == 2){
+        else if (choice == 2) markComplete(robotManager, orderManager);
+        else if (choice == 3){
             char id;
             int num;
             char answer;
@@ -104,9 +114,9 @@ void robotMenu(RobotManager& robotManager, OrderManager& orderManager, BST& item
             bool status = (tolower(answer) == 'y') ? true : false; 
             robotManager.setMaintenanceStatus(r_id, status);
         }
-        else if (choice == 3) robotManager.displayAssignmentList();
-        else if (choice == 4) robotManager.displayRobotStatus();
-        else if (choice == 5){
+        else if (choice == 4) robotManager.displayAssignmentList();
+        else if (choice == 5) robotManager.displayRobotStatus();
+        else if (choice == 6){
             robotManager.displayRobotStatus();//all r_id
 
             std::string r_id;
@@ -120,9 +130,9 @@ void robotMenu(RobotManager& robotManager, OrderManager& orderManager, BST& item
             cin >> task;
             
             AssignmentRecord* record = robotManager.getRecord(r_id, task);
-            robotManager.nav->moveRobot(robotManager.getRobot(record->robot_index), record->targetLocation.zone, record->targetLocation.aisle, record->targetLocation.shelf);
+            robotManager.nav->moveRobot(record->robot, record->targetLocation.zone, record->targetLocation.aisle, record->targetLocation.shelf);
         } 
-        else if (choice == 6) break;
+        else if (choice == 7) break;
     }
 }
 
