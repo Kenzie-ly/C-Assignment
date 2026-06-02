@@ -1,0 +1,70 @@
+ITEM001|Laptop|Zone-A|Aisle-1|Shelf-1
+ITEM002|Wireless Mouse|Zone-A|Aisle-1|Shelf-2
+ITEM003|USB Hub|Zone-A|Aisle-2|Shelf-1
+ITEM004|Keyboard|Zone-A|Aisle-2|Shelf-2
+ITEM005|Monitor|Zone-A|Aisle-3|Shelf-1
+ITEM006|T-Shirt|Zone-B|Aisle-1|Shelf-1
+ITEM007|Jeans|Zone-B|Aisle-1|Shelf-2
+ITEM008|Sneakers|Zone-B|Aisle-2|Shelf-1
+ITEM009|Jacket|Zone-B|Aisle-2|Shelf-2
+ITEM010|Socks|Zone-B|Aisle-3|Shelf-1
+ITEM011|Blender|Zone-C|Aisle-1|Shelf-1
+ITEM012|Rice Cooker|Zone-C|Aisle-1|Shelf-2
+ITEM013|Coffee Maker|Zone-C|Aisle-2|Shelf-1
+ITEM014|Dinner Plate Set|Zone-C|Aisle-2|Shelf-2
+ITEM015|Water Bottle|Zone-C|Aisle-3|Shelf-1
+ITEM016|Novel|Zone-D|Aisle-1|Shelf-1
+ITEM017|Textbook|Zone-D|Aisle-1|Shelf-2
+ITEM018|Notebook|Zone-D|Aisle-2|Shelf-1
+ITEM019|Pen Set|Zone-D|Aisle-2|Shelf-2
+ITEM020|Sticky Notes|Zone-D|Aisle-3|Shelf-1
+ITEM021|Headphones|Zone-A|Aisle-3|Shelf-2
+ITEM022|Tablet|Zone-A|Aisle-1|Shelf-1
+ITEM023|Smartphone|Zone-A|Aisle-1|Shelf-2
+ITEM024|Smartwatch|Zone-A|Aisle-2|Shelf-1
+ITEM025|Webcam|Zone-A|Aisle-2|Shelf-2
+ITEM026|External SSD|Zone-A|Aisle-3|Shelf-1
+ITEM027|HDMI Cable|Zone-A|Aisle-3|Shelf-2
+ITEM028|Power Bank|Zone-A|Aisle-1|Shelf-1
+ITEM029|Bluetooth Speaker|Zone-A|Aisle-1|Shelf-2
+ITEM030|Desk Lamp|Zone-A|Aisle-2|Shelf-1
+ITEM031|CPU Cooler|Zone-A|Aisle-2|Shelf-2
+ITEM032|RAM Module|Zone-A|Aisle-3|Shelf-1
+ITEM033|Graphics Card|Zone-A|Aisle-3|Shelf-2
+ITEM034|Hoodie|Zone-B|Aisle-3|Shelf-2
+ITEM035|Shorts|Zone-B|Aisle-1|Shelf-1
+ITEM036|Cap|Zone-B|Aisle-1|Shelf-2
+ITEM037|Belt|Zone-B|Aisle-2|Shelf-1
+ITEM038|Scarf|Zone-B|Aisle-2|Shelf-2
+ITEM039|Gloves|Zone-B|Aisle-3|Shelf-1
+ITEM040|Dress|Zone-B|Aisle-3|Shelf-2
+ITEM041|Polo Shirt|Zone-B|Aisle-1|Shelf-1
+ITEM042|Raincoat|Zone-B|Aisle-1|Shelf-2
+ITEM043|Sandals|Zone-B|Aisle-2|Shelf-1
+ITEM044|Boots|Zone-B|Aisle-2|Shelf-2
+ITEM045|Backpack|Zone-B|Aisle-3|Shelf-1
+ITEM046|Air Fryer|Zone-C|Aisle-3|Shelf-2
+ITEM047|Microwave|Zone-C|Aisle-1|Shelf-1
+ITEM048|Toaster|Zone-C|Aisle-1|Shelf-2
+ITEM049|Electric Kettle|Zone-C|Aisle-2|Shelf-1
+ITEM050|Cutting Board|Zone-C|Aisle-2|Shelf-2
+ITEM051|Knife Set|Zone-C|Aisle-3|Shelf-1
+ITEM052|Mixing Bowl|Zone-C|Aisle-3|Shelf-2
+ITEM053|Frying Pan|Zone-C|Aisle-1|Shelf-1
+ITEM054|Pot Set|Zone-C|Aisle-1|Shelf-2
+ITEM055|Food Container|Zone-C|Aisle-2|Shelf-1
+ITEM056|Dish Rack|Zone-C|Aisle-2|Shelf-2
+ITEM057|Kitchen Scale|Zone-C|Aisle-3|Shelf-1
+ITEM058|Spatula Set|Zone-C|Aisle-3|Shelf-2
+ITEM059|Highlighter Set|Zone-D|Aisle-3|Shelf-2
+ITEM060|Stapler|Zone-D|Aisle-1|Shelf-1
+ITEM061|Folder|Zone-D|Aisle-1|Shelf-2
+ITEM062|Whiteboard Marker|Zone-D|Aisle-2|Shelf-1
+ITEM063|Eraser Pack|Zone-D|Aisle-2|Shelf-2
+ITEM064|Scissors|Zone-D|Aisle-3|Shelf-1
+ITEM065|Tape Dispenser|Zone-D|Aisle-3|Shelf-2
+ITEM066|Index Cards|Zone-D|Aisle-1|Shelf-1
+ITEM067|Planner|Zone-D|Aisle-1|Shelf-2
+ITEM068|Ruler|Zone-D|Aisle-2|Shelf-1
+ITEM069|Correction Pen|Zone-D|Aisle-2|Shelf-2
+ITEM070|Binder Clips|Zone-D|Aisle-3|Shelf-1
