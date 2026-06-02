@@ -6,35 +6,60 @@
 #include "Navigation.h"
 #include "bstree.h"
 
-using namespace std;
+void processAllOrders(RobotManager& robotManager, OrderManager& orderManager){
+    using namespace std;
 
-void robotMenu(RobotManager& robotManager){
+    if (orderManager.isEmpty()){
+        cout << "There are no orders currently" << endl;
+    }
+
+    while (!orderManager.isEmpty()){
+        Order* order = orderManager.peakOrder();
+
+        cout << "\nReading Order..." << endl;
+        cout << "OrderID: " << order->OrderID << endl;
+        cout << "Item Name: " << order->ItemName << endl;
+
+        cout << "\nAssigning robot..." << endl;
+        string order_id = "ORD-" + to_string(order->OrderID);
+        cout << "Robot ID: " << robotManager.assignTask(order_id).r_id << endl;
+        
+        cout << endl;
+        robotManager.displayRobotStatus();
+
+        orderManager.getOrder();
+        cout << "\nLocating the item..." << endl;
+        // cout << "Item located at (" << order->x << ", " << order->y << ")" << endl;
+
+        cout << "\nPicking up the item..." << endl;
+        cout << "Item Name: " << order->ItemName << endl;
+
+        cout << "\nDelivering the item to packing station..." << endl;
+
+        orderManager.markCompleted(order->OrderID);
+        robotManager.completeTask();
+
+        cout << "\n\n\n";
+    }
+}
+
+void robotMenu(RobotManager& robotManager, OrderManager& orderManager){
     using namespace std;
 
     while (true){
         cout << endl;
-        cout << "1. Allocate tasks" << endl;
-        cout << "2. Complete tasks" << endl;
-        cout << "3. Set maintaincance status" << endl;
-        cout << "4. List robot assignment" << endl; //task id, robit id
-        cout << "5. Display active tasks" << endl; //task id, robit id, in progress status
-        cout << "6. Display robot status" << endl; //robot id, cur task, status, num of completed task
+        cout << "1. Process all orders" << endl;
+        cout << "2. Set maintenance status" << endl;
+        cout << "3. Display robot assignment" << endl; //task id, robit id
+        cout << "4. Display robot status" << endl; //robot id, cur task, status, num of completed task
 
-        cout << "7. Exit" << endl;
+        cout << "5. Exit" << endl;
         cout << "Input: ";
         int choice;
         cin >> choice;
         
-        if (choice == 1){
-            string task_id;
-
-            cout << "Enter task id: ";
-            cin >> task_id;
-
-            if (robotManager.assignTask(task_id)) cout << "Successfully assigining task!" << endl; else cout << "Sorry, no robots are available now!"<<endl;
-        }
-        else if(choice == 2) robotManager.completeTask();
-        else if (choice == 3){
+        if (choice == 1) processAllOrders(robotManager, orderManager);
+        else if (choice == 2){
             char id;
             int num;
             char answer;
@@ -48,10 +73,9 @@ void robotMenu(RobotManager& robotManager){
             bool status = (tolower(answer) == 'y') ? true : false; 
             robotManager.setMaintenanceStatus(r_id, status);
         }
-        else if (choice == 4) robotManager.displayAssignmentList();
-        else if (choice == 5) robotManager.displayActiveTask();
-        else if (choice == 6) robotManager.displayRobotStatus(); 
-        else if (choice == 7) break;
+        else if (choice == 3) robotManager.displayAssignmentList();
+        else if (choice == 4) robotManager.displayRobotStatus(); 
+        else if (choice == 5) break;
     }
 }
 
@@ -192,9 +216,10 @@ int main(){
     int capacity;
     OrderManager orderManager;
     BST itemDB;
-    cout << "Enter the number of robots in warehouse: ";
-    cin >> capacity;
+    std::cout << "Enter the number of robots in warehouse: ";
+    std::cin >> capacity;
     RobotManager robotManager(capacity);
+
     int mainMenuChoice;
     bool exitSystem = false;
     while (true) {
@@ -216,7 +241,7 @@ int main(){
                 break;
             }
             case 2: {
-                robotMenu(robotManager);
+                robotMenu(robotManager, orderManager);
                 break;
             }
             case 3: {

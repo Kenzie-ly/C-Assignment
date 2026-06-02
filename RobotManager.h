@@ -35,7 +35,7 @@ class RobotManager {
 
         ~RobotManager();
 
-        bool assignTask(std::string task);
+        Robot assignTask(std::string task);
 
         void completeTask();
 
