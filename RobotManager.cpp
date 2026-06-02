@@ -12,6 +12,7 @@ RobotManager::RobotManager(int capacity, Navigation* nav) {
     task_record_head = NULL;
     task_record_tail = NULL;
     total_robots = capacity;
+    int row = capacity-1;
 
     robots = new Robot[total_robots];
     for (int i=0; i<total_robots; i++){
@@ -22,6 +23,9 @@ RobotManager::RobotManager(int capacity, Navigation* nav) {
         robot.current_task = "";
         robot.movementLogs = new std::string[200];
         robot.stack = new Stack(200);
+        robot.currentCol = 0;
+        robot.currentRow = row;
+        row--;
 
         robots[i] = robot;
     }
@@ -39,7 +43,7 @@ RobotManager::~RobotManager() {
     }
 }
 
-Robot RobotManager::assignTask(std::string task) {
+Robot RobotManager::assignTask(std::string task, Location location) {
     //enqueue at rear
     int new_index = (last_robot_busy_index+1) % total_robots;
 
@@ -69,11 +73,15 @@ Robot RobotManager::assignTask(std::string task) {
 
     last_robot_busy_index = new_index;
 
+
     AssignmentRecord* newRecord = new AssignmentRecord();
     newRecord->r_id = robots[last_robot_busy_index].r_id;
     newRecord->t_id = task;
     newRecord->t_status = 0;
+    newRecord->targetLocation = location;
     newRecord->nextRecord = nullptr;
+
+
 
     if (task_record_head == nullptr){
         task_record_head = newRecord;
@@ -225,4 +233,14 @@ void RobotManager::setMaintenanceStatus(std::string r_id, bool status){
     }
 
     std::cout << "Robot ID cannot be found!" << std::endl;
+}
+
+Robot RobotManager::getRobotID(std::string r_id){
+    for (int i=0; i <total_robots; i++ ){
+
+        if (robots[i].r_id == r_id){
+            return robots[i];//return robot object
+        }
+    }
+    return Robot();
 }

@@ -6,6 +6,7 @@
 class Navigation;
 
 struct AssignmentRecord {
+    //robot record, containing(robot id, task id, task status)
     std::string r_id;
     std::string t_id;
     Location targetLocation;
@@ -27,6 +28,7 @@ struct Robot {
     int numOfTask = 0;
     int currentRow;
     int currentCol;
+
     Stack* stack;
     int top = -1;
     std::string* movementLogs;
@@ -49,7 +51,7 @@ class RobotManager {
 
         ~RobotManager();
 
-        Robot assignTask(std::string task);
+        Robot assignTask(std::string task, Location location);
 
         void completeTask();
 
@@ -60,6 +62,8 @@ class RobotManager {
         void displayAssignmentList();
 
         void setMaintenanceStatus(std::string r_id, bool status);
+
+        Robot getRobotID(std:: string r_id);
 
         Navigation* nav;
 

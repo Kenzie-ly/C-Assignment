@@ -81,9 +81,8 @@ void robotMenu(RobotManager& robotManager, OrderManager& orderManager, BST& item
         cout << "2. Set maintenance status" << endl;
         cout << "3. Display robot assignment" << endl; //task id, robit id
         cout << "4. Display robot status" << endl; //robot id, cur task, status, num of completed task
-        cout << "5. Display robot movement" << endl;
 
-        cout << "6. Exit" << endl;
+        cout << "5. Exit" << endl;
         cout << "Input: ";
         int choice;
         cin >> choice;
@@ -104,13 +103,22 @@ void robotMenu(RobotManager& robotManager, OrderManager& orderManager, BST& item
             robotManager.setMaintenanceStatus(r_id, status);
         }
         else if (choice == 3) robotManager.displayAssignmentList();
-        else if (choice == 4) robotManager.displayRobotStatus(); 
-        else if (choice == 5)
-        {
-            cout << "Select a robot to view:" << endl;
+        else if (choice == 4) {
+            char answer;
+            robotManager.displayRobotStatus();
 
-        }
-        else if (choice == 6) break;
+            cout << "Do u want to see robot's movement? (y/n)";
+            cin >> answer;
+
+            if(toupper(answer) == 'y'){
+                std::string r_id;
+
+                cout << "Select robot to display movement:";
+                cin >> r_id;
+                robotManager.getRobotID(r_id);
+            }
+        } 
+        else if (choice == 5) break;
     }
 }
 
@@ -249,8 +257,15 @@ int main(){
     OrderManager orderManager;
     BST itemDB;
 
-    std::cout << "Enter the number of robots in warehouse: ";
+    std::cout << "Enter the number of robots in warehouse (Max 10): ";
     std::cin >> capacity;
+
+    while(capacity > 10){
+        std::cout << "Enter the number of robots in warehouse (Max 10): ";
+        std::cin >> capacity;
+
+        if(capacity>10) std::cout << "Cannot be more than 10";
+    }
     RobotManager robotManager(capacity, navigation);
 
     int mainMenuChoice;
