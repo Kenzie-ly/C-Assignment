@@ -23,24 +23,12 @@ void processAllOrders(RobotManager& robotManager, OrderManager& orderManager, BS
 
         cout << "\nAssigning robot..." << endl;
         string order_id = to_string(order->OrderID);
-        Robot robot = robotManager.assignTask(order_id);
-        std::string robot_id = robot.r_id;
-        if (robot.r_id == "") {
-            cout << "No robot available. Stopping order processing.\n";
-            return;
-        }
 
-        cout << endl;
-        cout << "Assigned Robot ID: " << robot_id << endl;
-        robotManager.displayRobotStatus();
-        orderManager.getOrder();
-        
         cout << "\nLocating the item..." << endl;
         std::string location = itemDB.getLocation(order->ItemName);
         std::stringstream split(location);
         std::string zone, aisle, shelf;
-        std::cout << location << '\n';
-        int z= 0, a = 0, s = 0;
+        int z = 0, a = 0, s = 0;
         std::getline(split, zone, ',');
         std::getline(split, aisle, ',');
         std::getline(split, shelf, ',');
@@ -56,9 +44,22 @@ void processAllOrders(RobotManager& robotManager, OrderManager& orderManager, BS
 
         if (shelf == "Shelf-1") s = 1;
         else if (shelf == "Shelf-2") s = 2;
-        robot.targetAisle = a;
-        robot.targetShelf = s;
-        robot.targetZone = z;
+        Location targetLocation;
+        targetLocation.zone = z;
+        targetLocation.aisle = a;
+        targetLocation.shelf = s;
+
+        Robot robot = robotManager.assignTask(order_id, targetLocation);
+        std::string robot_id = robot.r_id;
+        if (robot.r_id == "") {
+            cout << "No robot available. Stopping order processing.\n";
+            return;
+        }
+
+        cout << endl;
+        cout << "Assigned Robot ID: " << robot_id << endl;
+        robotManager.displayRobotStatus();
+        orderManager.getOrder();
 
         cout << "\nPicking up the item..." << endl;
         cout << "Item Name: " << order->ItemName << endl;
