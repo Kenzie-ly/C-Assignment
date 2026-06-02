@@ -75,7 +75,7 @@ Robot RobotManager::assignTask(std::string task, Location location) {
 
 
     AssignmentRecord* newRecord = new AssignmentRecord();
-    newRecord->r_id = robots[last_robot_busy_index].r_id;
+    newRecord->robot = robots[last_robot_busy_index];
     newRecord->t_id = task;
     newRecord->t_status = 0;
     newRecord->targetLocation = location;
@@ -94,6 +94,7 @@ Robot RobotManager::assignTask(std::string task, Location location) {
     robots[last_robot_busy_index].r_status = 0;
     robots[last_robot_busy_index].current_task = task;
     robots[last_robot_busy_index].numOfTask += 1;
+    robots[last_robot_busy_index].current_target_location = location;
 
     return robots[last_robot_busy_index];
 }
@@ -111,7 +112,7 @@ void RobotManager::completeTask() {
     //update assignment record
     AssignmentRecord* cur = task_record_head;
     while (cur != NULL){
-        if(cur->r_id == robots[current_index].r_id && cur->t_status == 0){
+        if(cur->robot.r_id == robots[current_index].r_id && cur->t_status == 0){
             cur->t_status = 1;
             std::cout<< "Sucesfully completed task for " << cur->t_id << std::endl;
             break;
@@ -188,9 +189,10 @@ void RobotManager::displayAssignmentList() {
     cout << left << setw(15) << "Task ID" 
             << setw(15) << "Robot ID" 
             << setw(15) << "Task Status" << endl;
+
     while (cur != nullptr){
         cout << left << setw(15) << cur->t_id 
-                << setw(15) << cur->r_id 
+                << setw(15) << cur->robot.r_id 
                 << setw(15) << checkStatus(cur->t_status, 't') << endl;
         cur = cur->nextRecord;
     }
@@ -235,12 +237,15 @@ void RobotManager::setMaintenanceStatus(std::string r_id, bool status){
     std::cout << "Robot ID cannot be found!" << std::endl;
 }
 
-Robot RobotManager::getRobotID(std::string r_id){
-    for (int i=0; i <total_robots; i++ ){
 
-        if (robots[i].r_id == r_id){
-            return robots[i];//return robot object
+
+AssignmentRecord* RobotManager::getRecord(std::string r_id, std::string task){
+    AssignmentRecord* cur = task_record_head;
+    
+    while (cur != nullptr){
+        if(cur->robot.r_id == r_id && cur->t_id == task){
+
+            return cur;
         }
     }
-    return Robot();
 }

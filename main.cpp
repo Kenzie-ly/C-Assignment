@@ -82,8 +82,9 @@ void robotMenu(RobotManager& robotManager, OrderManager& orderManager, BST& item
         cout << "2. Set maintenance status" << endl;
         cout << "3. Display robot assignment" << endl; //task id, robit id
         cout << "4. Display robot status" << endl; //robot id, cur task, status, num of completed task
+        cout << "5. Display robot movement" << end;
 
-        cout << "5. Exit" << endl;
+        cout << "6. Exit" << endl;
         cout << "Input: ";
         int choice;
         cin >> choice;
@@ -104,23 +105,24 @@ void robotMenu(RobotManager& robotManager, OrderManager& orderManager, BST& item
             robotManager.setMaintenanceStatus(r_id, status);
         }
         else if (choice == 3) robotManager.displayAssignmentList();
-        else if (choice == 4) {
-            char answer;
+        else if (choice == 4) robotManager.displayRobotStatus();
+        else if (choice == 5){
             robotManager.displayRobotStatus();
 
-            cout << "Do u want to see robot's movement? (y/n)";
-            cin >> answer;
 
-            if(toupper(answer) == 'y'){
-                std::string r_id;
+            std::string r_id;
+            std::string task;
 
-                cout << "Select robot to display movement:";
-                cin >> r_id;
-                Robot robot = robotManager.getRobotID(r_id);
-                robotManager.nav->moveRobot(&robot, robot.)
-            }
+            cout << "Select robot to display movement:";
+            cin >> r_id;
+
+            cout << "Select task to display movement:";
+            cin >> task;
+            
+            AssignmentRecord* record = robotManager.getRecord(r_id, task);
+            robotManager.nav->moveRobot(&record->robot, task);
         } 
-        else if (choice == 5) break;
+        else if (choice == 6) break;
     }
 }
 
