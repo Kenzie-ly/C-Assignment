@@ -316,5 +316,5 @@ BSTNode* BST::getItemByIndexHelper(BSTNode* root, int index, int& current) {
 std::string BST::getLocation(const std::string& id) {
 	BSTNode* node = searchByIDHelper(root, id);
 	if (node == nullptr) return "ITEM NOT FOUND";
-	return node->data.zone + ", " + node->data.aisle + ", " + node->data.shelf;
+	return node->data.zone + "," + node->data.aisle + "," + node->data.shelf;
 }

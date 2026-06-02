@@ -4,11 +4,12 @@
 #include "RobotManager.h"
 
 class Layout;
+class Robot;
 
 class Navigation
 {
 public:
-	Navigation(Layout& layout);
+	Navigation(Layout& layout) : layout(layout) {};
 	~Navigation() {}	
 
 	void moveRobot(Robot* robot, int zone, int aisle, int shelf);
@@ -17,10 +18,8 @@ public:
 private:
 	bool tryMove(Robot* robot, std::string direction);
 	void reverseMove(Robot* robot);
-	void display();
+	void display(Robot* robot);
 
 	Layout& layout;
-	Stack* stack;
-	std::string* movementLogs;
 	int top = -1;
 };

@@ -1,12 +1,24 @@
 #pragma once
 #include <string>
+#include "Stack.h"
+
+
+class Navigation;
 
 struct AssignmentRecord {
+    //robot record, containing(robot id, task id, task status)
     std::string r_id;
     std::string t_id;
+    Location targetLocation;
     int t_status;
 
     AssignmentRecord* nextRecord;
+};
+
+struct Location {
+    int zone;
+    int aisle;
+    int shelf;
 };
 
 struct Robot {
@@ -16,6 +28,10 @@ struct Robot {
     int numOfTask = 0;
     int currentRow;
     int currentCol;
+
+    Stack* stack;
+    int top = -1;
+    std::string* movementLogs;
 };
 
 class RobotManager {
@@ -31,11 +47,11 @@ class RobotManager {
     bool is_empty = true;
 
     public:
-        RobotManager(int capacity);
+        RobotManager(int capacity, Navigation* nav);
 
         ~RobotManager();
 
-        Robot assignTask(std::string task);
+        Robot assignTask(std::string task, Location location);
 
         void completeTask();
 
@@ -46,6 +62,10 @@ class RobotManager {
         void displayAssignmentList();
 
         void setMaintenanceStatus(std::string r_id, bool status);
+
+        Robot getRobotID(std:: string r_id);
+
+        Navigation* nav;
 
     private:
         std::string checkStatus(int status, char code);

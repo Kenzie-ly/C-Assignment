@@ -2,12 +2,7 @@
 #include "Navigation.h"
 #include "Layout.h"
 #include <windows.h>
-
-Navigation::Navigation(Layout& layout) : layout(layout)
-{
-	stack = new Stack(200);
-    movementLogs = new std::string[500];
-}
+#include "RobotManager.h"
 
 void Navigation::moveRobot(Robot* robot, int zone, int aisle, int shelf)
 {
@@ -59,17 +54,17 @@ void Navigation::moveRobot(Robot* robot, int zone, int aisle, int shelf)
         Sleep(150);
         system("cls");
         layout.display();
-        display();
+        display(robot);
 	}
 
-    Sleep(3000);
-    while (!stack->isEmpty())
+    Sleep(2000);
+    while (!robot->stack->isEmpty())
     {
         reverseMove(robot);
         Sleep(150);
         system("cls");
         layout.display();
-        display();
+        display(robot);
         std::cout << '\n' << std::endl;
     }
 }
@@ -100,9 +95,9 @@ bool Navigation::tryMove(Robot* robot, std::string direction)
         layout.deoccupyLocation(robot->currentRow, robot->currentCol);
         robot->currentRow = nextRow;
         robot->currentCol = nextCol;
-        stack->push(direction);
+        robot->stack->push(direction);
         top++;
-        movementLogs[top] = direction;
+        robot->movementLogs[top] = direction;
         layout.occupyLocation(nextRow, nextCol);
         return true;
     }
@@ -112,7 +107,7 @@ bool Navigation::tryMove(Robot* robot, std::string direction)
 void Navigation::reverseMove(Robot* robot)
 {
     layout.deoccupyLocation(robot->currentRow, robot->currentCol);
-    std::string direction = stack->pop();
+    std::string direction = robot->stack->pop();
     std::string reversed;
     if (direction == "right")
     {
@@ -135,15 +130,15 @@ void Navigation::reverseMove(Robot* robot)
         reversed = "up";
     }
 
-    top++;
-    movementLogs[top] = reversed;
+    robot->top++;
+    robot->movementLogs[top] = reversed;
     layout.occupyLocation(robot->currentRow, robot->currentCol);
 }
 
-void Navigation::display()
+void Navigation::display(Robot* robot)
 {
     for (int i = 0; i <= top; i++)
     {
-        std::cout << movementLogs[i] << ", ";
+        std::cout << robot->movementLogs[i] << ", ";
     }
 }
