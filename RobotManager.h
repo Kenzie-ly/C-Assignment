@@ -2,19 +2,7 @@
 #include <string>
 #include "Stack.h"
 
-
 class Navigation;
-
-struct AssignmentRecord {
-    //robot record, containing(robot id, task id, task status)
-    Robot robot;
-    std::string t_id;
-    Location targetLocation;
-    int t_status;
-
-    AssignmentRecord* nextRecord;
-};
-
 
 struct Location {
     int zone;
@@ -35,6 +23,16 @@ struct Robot {
     Stack* stack;
     int top = -1;
     std::string* movementLogs;
+};
+
+struct AssignmentRecord {
+    //robot record, containing(robot id, task id, task status)
+    Robot robot;    
+    std::string t_id;
+    Location targetLocation;
+    int t_status;
+
+    AssignmentRecord* nextRecord;
 };
 
 class RobotManager {
@@ -63,6 +61,8 @@ class RobotManager {
         void displayRobotStatus();
 
         void displayAssignmentList();
+
+        void displaySelectedRobotAssignmentList(Robot* robot);
 
         void setMaintenanceStatus(std::string r_id, bool status);
 

@@ -198,6 +198,24 @@ void RobotManager::displayAssignmentList() {
     }
 }
 
+void RobotManager::displaySelectedRobotAssignmentList(Robot* robot)
+{
+    if (task_record_head == NULL) {
+        std::cout << "There are no tasks assigned yet." << std::endl;
+        return;
+    }
+
+    AssignmentRecord* cur = task_record_head;
+
+    while (cur != nullptr) {
+        if (cur->robot.r_id == robot->r_id)
+        {
+            std::cout << std::left << std::setw(15) << cur->t_id;
+            cur = cur->nextRecord;
+        }
+    }
+}
+
 std::string RobotManager::checkStatus(int status, char code) {
     using namespace std;
     string s = "";
