@@ -12,7 +12,7 @@ RobotManager::RobotManager(int capacity, Navigation* nav) {
     task_record_head = NULL;
     task_record_tail = NULL;
     total_robots = capacity;
-    int row = capacity-1;
+    int row = 10;
 
     robots = new Robot[total_robots];
     for (int i=0; i<total_robots; i++){

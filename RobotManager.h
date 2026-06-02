@@ -27,7 +27,7 @@ struct Robot {
 
 struct AssignmentRecord {
     //robot record, containing(robot id, task id, task status)
-    Robot robot;    
+    Robot robot;
     std::string t_id;
     Location targetLocation;
     int t_status;

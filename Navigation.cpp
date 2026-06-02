@@ -15,52 +15,17 @@ void Navigation::moveRobot(Robot* robot, int zone, int aisle, int shelf)
 	int targetCol;
 	getTarget(zone, aisle, shelf, targetRow, targetCol);
 
-	while (robot->currentRow != targetRow || robot->currentCol != targetCol)
-	{
-        if (robot->currentCol < targetCol)
-        {
-            if (!tryMove(robot, "right"))
-                if (!tryMove(robot, "up"))
-                    if (!tryMove(robot, "down"))
-                    {
-                        reverseMove(robot);
-                    }    
-        }
-        else if (robot->currentCol > targetCol)
-        {
-            if (!tryMove(robot, "left"))
-                if (!tryMove(robot, "up"))
-                    if (!tryMove(robot, "down"))
-                    {
-                        reverseMove(robot);
-                    }
-        }
-        else
-        {
-            if (robot->currentRow > targetRow)  // go up
-            {
-                if (!tryMove(robot, "up"))
-                    if (!tryMove(robot, "right"))
-                        if (!tryMove(robot, "left"))
-                        {
-                            reverseMove(robot);
-                        }
-            }
-            else  // go down
-            {
-                if (!tryMove(robot, "down"))
-                    if (!tryMove(robot, "right"))
-                        if (!tryMove(robot, "left"))
-                        {
-                            reverseMove(robot);
-                        }
-            }
-        }
+    int pathLength = 0;
+    std::string* path = findPath(robot->currentRow, robot->currentCol, targetRow, targetCol, pathLength);
+
+    for (int i = 0; i < pathLength; i++) {
+        tryMove(robot, path[i]);
         Sleep(150);
         system("cls");
         layout.display();
         display(robot);
-	}
+    }
+    delete[] path;
 
     Sleep(2000);
     while (!robot->stack->isEmpty())
@@ -146,4 +111,70 @@ void Navigation::display(Robot* robot)
     {
         std::cout << robot->movementLogs[i] << ", ";
     }
+}
+
+void Navigation::enqueue(PathNode*& head, PathNode*& tail, PathNode* node) {
+    node->next = nullptr;
+    if (tail) tail->next = node;
+    else head = node;
+    tail = node;
+}
+
+PathNode* Navigation::dequeue(PathNode*& head, PathNode*& tail) {
+    if (!head) return nullptr;
+    PathNode* node = head;
+    head = head->next;
+    if (!head) tail = nullptr;
+    return node;
+}
+
+std::string* Navigation::findPath(int startRow, int startCol, int targetRow, int targetCol, int& pathLength) {
+    bool visited[15][45] = {};
+    PathNode* head = nullptr;
+    PathNode* tail = nullptr;
+
+    PathNode* start = new PathNode();
+    start->row = startRow;
+    start->col = startCol;
+    start->pathLength = 0;
+    enqueue(head, tail, start);
+    visited[startRow][startCol] = true;
+
+    int dRow[] = { -1, 1, 0, 0 };
+    int dCol[] = { 0, 0, -1, 1 };
+    std::string dirs[] = { "up", "down", "left", "right" };
+
+    while (head) {
+        PathNode* cur = dequeue(head, tail);
+
+        if (cur->row == targetRow && cur->col == targetCol) {
+            pathLength = cur->pathLength;
+            std::string* result = new std::string[pathLength];
+            for (int i = 0; i < pathLength; i++)
+                result[i] = cur->path[i];
+            delete cur;
+            return result;
+        }
+
+        for (int i = 0; i < 4; i++) {
+            int nr = cur->row + dRow[i];
+            int nc = cur->col + dCol[i];
+            if (nr < 0 || nr >= 15 || nc < 0 || nc >= 45) continue;
+            if (visited[nr][nc] || layout.isObstacle(nr, nc)) continue;
+
+            visited[nr][nc] = true;
+            PathNode* next = new PathNode();
+            next->row = nr;
+            next->col = nc;
+            next->pathLength = cur->pathLength + 1;
+            for (int j = 0; j < cur->pathLength; j++)
+                next->path[j] = cur->path[j];
+            next->path[cur->pathLength] = dirs[i];
+            enqueue(head, tail, next);
+        }
+        delete cur;
+    }
+
+    pathLength = 0;
+    return nullptr;
 }
