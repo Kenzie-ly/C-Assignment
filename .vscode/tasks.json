@@ -13,6 +13,7 @@
                 "Layout.cpp",
                 "Navigation.cpp",
                 "Stack.cpp",
+                "bstree.cpp",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],

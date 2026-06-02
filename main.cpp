@@ -22,12 +22,18 @@ void processAllOrders(RobotManager& robotManager, OrderManager& orderManager){
 
         cout << "\nAssigning robot..." << endl;
         string order_id = "ORD-" + to_string(order->OrderID);
-        cout << "Robot ID: " << robotManager.assignTask(order_id).r_id << endl;
+        string robot_id = robotManager.assignTask(order_id).r_id;
         
-        cout << endl;
-        robotManager.displayRobotStatus();
+        if (robot_id == "") {
+            cout << "No robot available. Stopping order processing.\n";
+            return;
+        }
 
+        cout << endl;
+        cout << "Assigned Robot ID: " << robot_id << endl;
+        robotManager.displayRobotStatus();
         orderManager.getOrder();
+        
         cout << "\nLocating the item..." << endl;
         // cout << "Item located at (" << order->x << ", " << order->y << ")" << endl;
 

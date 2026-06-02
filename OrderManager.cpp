@@ -108,7 +108,7 @@ void OrderManager::markCompleted(int orderID) {
     Order* current = orderHistoryHead;
     while (current != nullptr) {
         if (current->OrderID == orderID) {
-            current->Status == "Completed";
+            current->Status = "Completed";
             return;
         }
         current = current->NextOrder;
