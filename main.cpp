@@ -25,7 +25,7 @@ void processAllOrders(RobotManager& robotManager, OrderManager& orderManager, BS
         string order_id = to_string(order->OrderID);
 
         cout << "\nLocating the item..." << endl;
-        std::string location = itemDB.getLocation(order->ItemName);
+        std::string location = itemDB.getLocation(order->ItemNode->id);
         std::stringstream split(location);
         std::string zone, aisle, shelf;
         int z = 0, a = 0, s = 0;
@@ -116,7 +116,8 @@ void robotMenu(RobotManager& robotManager, OrderManager& orderManager, BST& item
 
                 cout << "Select robot to display movement:";
                 cin >> r_id;
-                robotManager.getRobotID(r_id);
+                Robot robot = robotManager.getRobotID(r_id);
+                robotManager.nav->moveRobot(&robot, robot.)
             }
         } 
         else if (choice == 5) break;
