@@ -21,5 +21,4 @@ private:
 	void display(Robot* robot);
 
 	Layout& layout;
-	int top = -1;
 };

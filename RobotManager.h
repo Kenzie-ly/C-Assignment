@@ -31,7 +31,7 @@ struct AssignmentRecord {
     std::string t_id;
     Location targetLocation;
     int t_status;
-
+    int robot_index;
     AssignmentRecord* nextRecord;
 };
 
@@ -69,6 +69,10 @@ class RobotManager {
         AssignmentRecord* getRecord(std::string r_id, std::string task);
 
         Navigation* nav;
+
+        Robot* getRobot(int index) {
+            return &robots[index];
+        }
 
     private:
         std::string checkStatus(int status, char code);

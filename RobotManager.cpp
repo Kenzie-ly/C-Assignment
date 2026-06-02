@@ -79,9 +79,8 @@ Robot RobotManager::assignTask(std::string task, Location location) {
     newRecord->t_id = task;
     newRecord->t_status = 0;
     newRecord->targetLocation = location;
+    newRecord->robot_index = last_robot_busy_index;
     newRecord->nextRecord = nullptr;
-
-
 
     if (task_record_head == nullptr){
         task_record_head = newRecord;
@@ -210,9 +209,10 @@ void RobotManager::displaySelectedRobotAssignmentList(std::string r_id)
     while (cur != nullptr) {
         if (cur->robot.r_id == r_id)
         {
-            std::cout << std::left << std::setw(15) << cur->t_id;
-            cur = cur->nextRecord;
+            std::cout << "Tasks:" << '\n';
+            std::cout << std::left << std::setw(15) << cur->t_id << std::endl;
         }
+        cur = cur->nextRecord;
     }
 }
 
@@ -255,8 +255,6 @@ void RobotManager::setMaintenanceStatus(std::string r_id, bool status){
     std::cout << "Robot ID cannot be found!" << std::endl;
 }
 
-
-
 AssignmentRecord* RobotManager::getRecord(std::string r_id, std::string task){
     AssignmentRecord* cur = task_record_head;
     
@@ -265,5 +263,6 @@ AssignmentRecord* RobotManager::getRecord(std::string r_id, std::string task){
 
             return cur;
         }
+        cur = cur->nextRecord;
     }
 }

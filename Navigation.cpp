@@ -6,6 +6,11 @@
 
 void Navigation::moveRobot(Robot* robot, int zone, int aisle, int shelf)
 {
+    for (int i = 0; i <= robot->top; i++) {
+        robot->movementLogs[i] = "";
+    }
+    robot->top = -1;
+
 	int targetRow;
 	int targetCol;
 	getTarget(zone, aisle, shelf, targetRow, targetCol);
@@ -96,8 +101,8 @@ bool Navigation::tryMove(Robot* robot, std::string direction)
         robot->currentRow = nextRow;
         robot->currentCol = nextCol;
         robot->stack->push(direction);
-        top++;
-        robot->movementLogs[top] = direction;
+        robot->top++;
+        robot->movementLogs[robot->top] = direction;
         layout.occupyLocation(nextRow, nextCol);
         return true;
     }
@@ -131,13 +136,13 @@ void Navigation::reverseMove(Robot* robot)
     }
 
     robot->top++;
-    robot->movementLogs[top] = reversed;
+    robot->movementLogs[robot->top] = reversed;
     layout.occupyLocation(robot->currentRow, robot->currentCol);
 }
 
 void Navigation::display(Robot* robot)
 {
-    for (int i = 0; i <= top; i++)
+    for (int i = 0; i <= robot->top; i++)
     {
         std::cout << robot->movementLogs[i] << ", ";
     }

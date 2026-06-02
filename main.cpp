@@ -112,16 +112,15 @@ void robotMenu(RobotManager& robotManager, OrderManager& orderManager, BST& item
             std::string r_id;
             std::string task;
 
-            cout << "Select robot to display movement:";
+            cout << "Select robot to display movement: ";
             cin >> r_id;
             
             robotManager.displaySelectedRobotAssignmentList(r_id);
-            cout << "Select task to display movement:";
+            cout << "Select task to display movement: ";
             cin >> task;
             
-            
             AssignmentRecord* record = robotManager.getRecord(r_id, task);
-            robotManager.nav->moveRobot(&record->robot, record->targetLocation.zone, record->targetLocation.aisle, record->targetLocation.shelf);
+            robotManager.nav->moveRobot(robotManager.getRobot(record->robot_index), record->targetLocation.zone, record->targetLocation.aisle, record->targetLocation.shelf);
         } 
         else if (choice == 6) break;
     }
